@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Telegram_Bot
@@ -26,15 +27,15 @@ namespace Telegram_Bot
             List<Books> books = GetAllCats();
             foreach (Books c in books)
             {
-                builder.Append($"Book name:{c.Name\n}\n" +
+                builder.Append($"Book name:{c.Name}\n" +
                     $"Book Author: {c.Author}\n" +
                     $"Book Category{c.Category_name}\n" +
-                    $"Book price {c.price}");
+                    $"Book price {c.price}\n");
             }
             return builder.ToString();
         }
 
-        public static void Update(string last_name,string new_price,string new_name, string new_author,string new_category_name)
+        public static void Update(string last_name, string new_price, string new_name, string new_author, string new_category_name)
         {
             try
             {
@@ -94,4 +95,4 @@ namespace Telegram_Bot
         public string Category_name;
     }
 }
-}
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Telegram_Bot
@@ -70,11 +71,11 @@ namespace Telegram_Bot
             if (System.IO.File.Exists(path))
             {
                 string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<Statuse>>(json) ?? new List<Statuse>();
+                return JsonSerializer.Deserialize<List<Categories>>(json) ?? new List<Categories>();
             }
             else
             {
-                return new List<Statuse>();
+                return new List<Categories>();
             }
         }
         public static void SaveCats(List<Statuse> status) 
@@ -83,7 +84,7 @@ namespace Telegram_Bot
             System.IO.File.WriteAllText(path, json);
         }
     }
-    public class Statuse
+    public class Categories
     {
         public string Status;
     }
