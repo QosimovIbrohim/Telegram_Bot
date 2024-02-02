@@ -49,7 +49,7 @@ namespace Telegram_Bot
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var getchatmember = await botClient.GetChatMemberAsync("@muhammadabdulloh_uz", update.Message.From.Id);
+            var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
             
             if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
             {
@@ -57,7 +57,7 @@ namespace Telegram_Bot
                         {
                     new []
                     {
-                        InlineKeyboardButton.WithUrl(text: "Canale 1", url: "https://t.me/muhammadabdulloh_uz"),
+                        InlineKeyboardButton.WithUrl(text: "Canale 1", url: "https://t.me/Abduvahobov09"),
                     },
                 });
 
@@ -79,7 +79,7 @@ namespace Telegram_Bot
                 status = 0,
                 phoneNumber = ""
             });
-            if(i   sAdmin(chatId) == true)
+            if(isAdmin(chatId) == true)
             {
                 Console.WriteLine("Adminku bu");
             }
