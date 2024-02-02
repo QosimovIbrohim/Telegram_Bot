@@ -9,41 +9,41 @@ namespace Telegram_Bot
 {
     public class CrudForChangeStatus
     {
-        public static string path = @"C:\Users\user\Desktop\Categpries.json";
+        public static string path = @"C:\Users\user\Desktop\Status.json";
 
-        public static void Create(Categories ct)
+        public static void Create(Statuse st)
         {
-            List<Categories> categories = GetAllCats();
-            if (categories.Any(c => c.Category_name == ct.Category_name))
+            List<Statuse> mystatus = GetStatus();
+            if (mystatus.Any(c => c.Category_name == st.Category_name))
             {
                 return;
             }
-            categories.Add(ct);
-            SaveCats(categories);
+            mystatus.Add(st);
+            SaveCats(mystatus);
         }
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<Categories> categories = GetAllCats();
-            foreach (Categories c in categories)
+            List<Statuse> status = GetStatus();
+            foreach (Statuse c in status)
             {
-                sb.Append(c.Category_name + " ");
+                sb.Append(c.Status + " ");
             }
             return sb.ToString();
         }
 
-        public static void Update(string new_name)
+        public static void Update(string Bystatus)
         {
             try
             {
-                List<Categories> categories = GetAllCats();
-                if (categories != null)
+                List<Statuse> status = GetStatus();
+                if (status != null)
                 {
-                    int index = categories.FindIndex(name => name.Category_name == new_name);
+                    int index = status.FindIndex(name => name.Category_name == new_name);
                     if (index != -1)
                     {
-                        categories[index].Category_name = new_name;
-                        SaveCats(categories);
+                        status[index].Category_name = new_name;
+                        SaveCats(status);
                     }
                 }
             }
@@ -54,7 +54,7 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Categories> categories = GetAllCats();
+                List<Statuse> categories = GetStatus();
                 var catToRemove = categories.Find(ct => ct.Category_name == del_name);
 
                 if (catToRemove != null)
@@ -65,7 +65,7 @@ namespace Telegram_Bot
             }
             catch { }
         }
-        public static List<Categories> GetAllCats()
+        public static List<Statuse> GetStatus()
         {
 
             if (System.IO.File.Exists(path))
@@ -78,15 +78,15 @@ namespace Telegram_Bot
                 return new List<Categories>();
             }
         }
-        public static void SaveCats(List<Categories> categories)
+        public static void SaveCats(List<Statuse> status) 
         {
-            string json = JsonSerializer.Serialize(categories);
+            string json = JsonSerializer.Serialize(status);
             System.IO.File.WriteAllText(path, json);
         }
     }
     public class Categories
     {
-        public string Category_name;
-        public long price;
+        public string Status;
     }
 }
+
