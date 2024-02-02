@@ -165,6 +165,7 @@ namespace Telegram_Bot
             // change qilinmasin
             if (isAdmin(chatId))
             {
+                
                 if (message.Text == "Category")
                 {
                     CRUD.ChangeStatusCode(chatId, 1);
@@ -192,6 +193,14 @@ namespace Telegram_Bot
                 else if (message.Text == "GetCustomerList")
                 {
                     CRUD.ChangeStatusCode(chatId, 7);
+                }
+                else if(message.Text == "Add Admin")
+                {
+                    await botClient.SendTextMessageAsync(
+                        chatId:chatId,
+                        text:"Enter admin chatId",
+                        cancellationToken:cancellationToken);
+                    return;
                 }
                 else if (message.Text == "Back")
                 {
@@ -234,7 +243,6 @@ namespace Telegram_Bot
                         {
                             new[]
                             {
-                { 
 
                             new KeyboardButton("Category"),
                             new KeyboardButton("Book"),
@@ -245,7 +253,8 @@ namespace Telegram_Bot
                             {
                                 new KeyboardButton("Change Status"),
                                 new KeyboardButton("GetExelFormat"),
-                                new KeyboardButton("GetCustomerList")
+                                new KeyboardButton("GetCustomerList"),
+                                new KeyboardButton("Add Admin")
                             },
                         })
                         {
@@ -302,6 +311,7 @@ namespace Telegram_Bot
                         {
                             ResizeKeyboard = true
                         };
+
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: message.Text,
@@ -363,7 +373,7 @@ namespace Telegram_Bot
 
 
 
-                    
+
                 }
 
             }
