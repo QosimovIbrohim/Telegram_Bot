@@ -165,7 +165,13 @@ namespace Telegram_Bot
             // change qilinmasin
             if (isAdmin(chatId))
             {
-                
+                /*long messageAsLong;
+                if (long.TryParse(message.Text, out messageAsLong))
+                {
+                    await Admins.Add(messageAsLong);
+                    await botClient.SendTextMessageAsync(chatId: chatId, text: "Succesfully added", cancellationToken: cancellationToken);
+                }
+                break;*/
                 if (message.Text == "Category")
                 {
                     CRUD.ChangeStatusCode(chatId, 1);
