@@ -140,7 +140,6 @@ namespace Telegram_Bot
                      text: "Assalomu aleykum, Botimizga xush kelibsiz bu bot orqali siz nimadir qila olishingiz mumkin",
                      cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
-                return;
             }
 
 
@@ -227,9 +226,9 @@ namespace Telegram_Bot
                         };
 
                         await botClient.SendTextMessageAsync(
-                            chatId:chatId,
+                            chatId: chatId,
                             text: message.Text,
-                            replyMarkup:replyKeyboardMarkup,
+                            replyMarkup: replyKeyboardMarkup,
                             cancellationToken: cancellationToken);
                         break;
                     case 1:
