@@ -168,7 +168,7 @@ namespace Telegram_Bot
             {
 
                 switch (CRUD.GetStatusCode(chatId))
-                {
+                { 
 
                     case 0:
                         await botClient.SendTextMessageAsync(
@@ -178,6 +178,10 @@ namespace Telegram_Bot
                         break;
                     default:
                         break;
+
+
+
+                    
                 }
 
             }
