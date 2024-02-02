@@ -169,6 +169,7 @@ namespace Telegram_Bot
 
                 switch (CRUD.GetStatusCode(chatId))
                 {
+
                     case 0:
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
