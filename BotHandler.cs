@@ -118,7 +118,7 @@ namespace Telegram_Bot
             {
                 if (CRUD.IsPhoneNumberNull(chatId) == false)
                 {
-
+                            `
                     ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                         {
                     KeyboardButton.WithRequestContact("Contact")
