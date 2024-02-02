@@ -256,6 +256,81 @@ namespace Telegram_Bot
                             replyMarkup: replyKeyboardMarkup2,
                             cancellationToken: cancellationToken);
                         break;
+                    case 2:
+                        ReplyKeyboardMarkup replyKeyboardMarkup3 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup3,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 3:
+                        ReplyKeyboardMarkup replyKeyboardMarkup4 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup4,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 4:
+                        ReplyKeyboardMarkup replyKeyboardMarkup5 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup5,
+                            cancellationToken: cancellationToken);
+                        break;
                     default:
                         break;
                 }
