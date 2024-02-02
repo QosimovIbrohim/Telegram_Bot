@@ -7,6 +7,7 @@ using Telegram.Bot.Exceptions;
 using Newtonsoft.Json.Serialization;
 using TelegramBot;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.ComponentModel;
 
 namespace Telegram_Bot
 {
@@ -14,6 +15,7 @@ namespace Telegram_Bot
     {
         public string botToken { get; set; }
         public int isCodeTrue = 0;
+
 
         public BotHandler(string token)
         {
@@ -46,35 +48,30 @@ namespace Telegram_Bot
 
             cts.Cancel();
         }
-        public async void functionFollow (ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            if (update.Message is not { } message)
+                return;
+            #region follow
             var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
-            if (update.Message != null)
+            if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
             {
-                var message = update.Message;
-                if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
-                {
-                    InlineKeyboardMarkup inlineKeyboard = new(new[]
-                            {
+                InlineKeyboardMarkup inlineKeyboard = new(new[]
+                        {
                     new []
                     {
                         InlineKeyboardButton.WithUrl(text: "Canale 1", url: "https://t.me/Abduvahobov09"),
                     },
                 });
-                    await botClient.SendTextMessageAsync(
-                        chatId: message.Chat.Id,
-                        text: "Before use the bot you must follow this channels.\nWhen you are ready, click -> /home <- to continue",
-                        replyMarkup: inlineKeyboard,
-                        cancellationToken: cancellationToken);
-                }
-            }
-        }
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            functionFollow(botClient, update, cancellationToken);
-            
-            if (update.Message is not { } message)
+                await botClient.SendTextMessageAsync(
+                    chatId: message.Chat.Id,
+                    text: "Before use the bot you must follow this channels.\nWhen you are ready, click -> /home <- to continue",
+                    replyMarkup: inlineKeyboard,
+                    cancellationToken: cancellationToken);
                 return;
+
+            }
+            #endregion
 
             long chatId = message.Chat.Id;
 
@@ -84,10 +81,7 @@ namespace Telegram_Bot
                 status = 0,
                 phoneNumber = ""
             });
-            if(isAdmin(chatId) == true)
-            {
-                Console.WriteLine("Adminku bu");
-            }
+
             if (isCodeTrue == 1)
             {
                 if (message.Text == "get_code")
@@ -117,9 +111,9 @@ namespace Telegram_Bot
                 isCodeTrue = 1;
                 return;
             }
-            
-               
-            
+
+
+
             if (message.Text == "/start")
             {
                 if (CRUD.IsPhoneNumberNull(chatId) == false)
@@ -160,26 +154,32 @@ namespace Telegram_Bot
                 {
                     ResizeKeyboard = true
                 };
-            await botClient.SendTextMessageAsync(
-                 chatId: chatId,
-                 text: "Botdan to'liq foydalanish uchun telefon raqamingizni jo'nating!",
-                 replyMarkup: replyKeyboardMarkup,
-                 cancellationToken: cancellationToken);
+                await botClient.SendTextMessageAsync(
+                     chatId: chatId,
+                     text: "Botdan to'liq foydalanish uchun telefon raqamingizni jo'nating!",
+                     replyMarkup: replyKeyboardMarkup,
+                     cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
                 return;
             }
-            switch (CRUD.GetStatusCode(chatId))
-            {
-                case 0:
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Tugadi",
-                        cancellationToken: cancellationToken);
-                    break;
-                default:
-                    break;
-            }
 
+            // change qilinmasin
+            if (isAdmin(chatId))
+            {
+
+                switch (CRUD.GetStatusCode(chatId))
+                {
+                    case 0:
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "",
+                            cancellationToken: cancellationToken);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
 
 
         }
@@ -195,7 +195,7 @@ namespace Telegram_Bot
             Console.WriteLine(ErrorMessage);
         }
         public bool isAdmin(long id)
-        { 
+        {
             foreach (long a in Admins)
             {
                 if (a == id) return true;
