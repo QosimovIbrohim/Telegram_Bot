@@ -140,14 +140,13 @@ namespace Telegram_Bot
                      text: "Assalomu aleykum, Botimizga xush kelibsiz bu bot orqali siz nimadir qila olishingiz mumkin",
                      cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
-                return;
             }
 
 
             if (CRUD.IsPhoneNumberNull(chatId) == false)
             {
 
-                ReplyKeyboardMarkup replyKeyboardMarkup = new(new[] 
+                ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                     {
                     KeyboardButton.WithRequestContact("Contact")
                 })
@@ -166,14 +165,171 @@ namespace Telegram_Bot
             // change qilinmasin
             if (isAdmin(chatId))
             {
+                if (message.Text == "Category")
+                {
+                    CRUD.ChangeStatusCode(chatId, 1);
+                }
+                else if (message.Text == "Book")
+                {
+                    CRUD.ChangeStatusCode(chatId, 2);
+                }
+                else if (message.Text == "OrderStatus")
+                {
+                    CRUD.ChangeStatusCode(chatId, 3);
+                }
+                else if (message.Text == "PayType")
+                {
+                    CRUD.ChangeStatusCode(chatId, 4);
+                }
+                else if (message.Text == "Change Status")
+                {
+                    CRUD.ChangeStatusCode(chatId, 5);
+                }
+                else if (message.Text == "GetExelFormat")
+                {
+                    CRUD.ChangeStatusCode(chatId, 6);
+                }
+                else if (message.Text == "GetCustomerList")
+                {
+                    CRUD.ChangeStatusCode(chatId, 7);
+                }
+                else if (message.Text == "Back")
+                {
+                    if (CRUD.GetStatusCode(chatId) == 1)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                }
 
                 switch (CRUD.GetStatusCode(chatId))
+                {
+                    case 0:
+                        ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+                        {
+                            new[]
+                            {
                 { 
 
-                    case 0:
+                            new KeyboardButton("Category"),
+                            new KeyboardButton("Book"),
+                            new KeyboardButton("OrderStatus"),
+                            new KeyboardButton("PayType"),
+                            },
+                            new[]
+                            {
+                                new KeyboardButton("Change Status"),
+                                new KeyboardButton("GetExelFormat"),
+                                new KeyboardButton("GetCustomerList")
+                            },
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "",
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 1:
+                        ReplyKeyboardMarkup replyKeyboardMarkup2 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup2,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 2:
+                        ReplyKeyboardMarkup replyKeyboardMarkup3 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup3,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 3:
+                        ReplyKeyboardMarkup replyKeyboardMarkup4 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup4,
+                            cancellationToken: cancellationToken);
+                        break;
+                    case 4:
+                        ReplyKeyboardMarkup replyKeyboardMarkup5 = new(new[]
+                       {
+                            new[]
+                            {
+
+                            new KeyboardButton("CREATE"),
+                             new KeyboardButton("READ"),
+                            new KeyboardButton("UPDATE"),
+                            new KeyboardButton("DELETE"),
+                            },
+                           new[]
+                           {
+                               new KeyboardButton("Back")
+                           }
+                        })
+                        {
+                            ResizeKeyboard = true
+                        };
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: message.Text,
+                            replyMarkup: replyKeyboardMarkup5,
                             cancellationToken: cancellationToken);
                         break;
                     default:
