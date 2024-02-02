@@ -192,7 +192,7 @@ namespace Telegram_Bot
         public bool is   Admin(long id)
         {
             Array Admins = new Array();
-            array = { 2016634633,5569322769 }
+            array = { 2016634633,5569322769 }    
             foreach (long a in Admins)
             {
                 if (a == id) return true;
