@@ -89,3 +89,4 @@ namespace Telegram_Bot
         public long price;
     }
 }
+   
