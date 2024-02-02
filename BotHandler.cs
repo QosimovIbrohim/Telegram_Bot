@@ -49,7 +49,7 @@ namespace Telegram_Bot
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var getchatmember = await botClient.GetChatMemberAsync("@muhammadabdulloh_uz", id);
+            var getchatmember = await botClient.GetChatMemberAsync("@muhammadabdulloh_uz", update.Message.From.Id);
             
             if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
             {
