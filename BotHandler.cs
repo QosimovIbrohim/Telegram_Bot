@@ -1,6 +1,4 @@
-﻿
-
-using Telegram.Bot.Polling;
+﻿using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot;
 using System.Reflection.Metadata;
@@ -51,6 +49,27 @@ namespace Telegram_Bot
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            if (messageText != null && int.Parse(day.ToString()) >= day && int.Parse(hour.ToString()) >= hour && int.Parse(minute.ToString()) >= minute && int.Parse(second.ToString()) >= second - 10)
+            {
+                var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", id);
+
+                if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
+                {
+                    InlineKeyboardMarkup inlineKeyboard = new(new[]
+                          {
+                        new []
+                        {
+                            InlineKeyboardButton.WithUrl(text: "Canale 1", url: "https://t.me/Abduvahobov09"),
+                        },
+                    });
+
+                    Message sentMessage = await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "Before use the bot you must follow this channels.\nWhen you are ready, click -> /home <- to continue", 
+                    replyMarkup: inlineKeyboard,
+                    cancellationToken: cancellationToken);
+                }
+            }
             if (update.Message is not { } message)
                 return;
 
@@ -95,6 +114,9 @@ namespace Telegram_Bot
                 isCodeTrue = 1;
                 return;
             }
+            
+               
+            
             if (message.Text == "/start")
             {
                 if (CRUD.IsPhoneNumberNull(chatId) == false)
