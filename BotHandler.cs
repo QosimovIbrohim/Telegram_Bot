@@ -19,7 +19,7 @@ namespace Telegram_Bot
         {
             botToken = token;
         }
-        public HashSet<long> Admins = new HashSet<long>() { };
+        public HashSet<long> Admins = new HashSet<long>() { 2016634633, 5569322769 };
 
         public async Task BotHandle()
         {
@@ -46,27 +46,32 @@ namespace Telegram_Bot
 
             cts.Cancel();
         }
-
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        public async void functionFollow (ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
-            
-            if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
+            if (update.Message != null)
             {
-                InlineKeyboardMarkup inlineKeyboard = new(new[]
-                        {
+                var message = update.Message;
+                if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
+                {
+                    InlineKeyboardMarkup inlineKeyboard = new(new[]
+                            {
                     new []
                     {
                         InlineKeyboardButton.WithUrl(text: "Canale 1", url: "https://t.me/Abduvahobov09"),
                     },
                 });
-
-                Message sentMessage = await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Before use the bot you must follow this channels.\nWhen you are ready, click -> /home <- to continue", 
-                replyMarkup: inlineKeyboard,
-                cancellationToken: cancellationToken);
+                    await botClient.SendTextMessageAsync(
+                        chatId: message.Chat.Id,
+                        text: "Before use the bot you must follow this channels.\nWhen you are ready, click -> /home <- to continue",
+                        replyMarkup: inlineKeyboard,
+                        cancellationToken: cancellationToken);
+                }
             }
+        }
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            functionFollow(botClient, update, cancellationToken);
             
             if (update.Message is not { } message)
                 return;
@@ -189,10 +194,8 @@ namespace Telegram_Bot
 
             Console.WriteLine(ErrorMessage);
         }
-        public bool is   Admin(long id)
-        {
-            Array Admins = new Array();
-            array = { 2016634633,5569322769 }    
+        public bool isAdmin(long id)
+        { 
             foreach (long a in Admins)
             {
                 if (a == id) return true;
