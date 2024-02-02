@@ -52,18 +52,12 @@ namespace Telegram_Bot
                 return;
 
             long chatId = message.Chat.Id;
-            if (message.Text != null)
-            {
-
-                await botClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: message.Text,
-                    cancellationToken: cancellationToken);
-            }
+            
+            
         }
 
 
-        async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
             {
