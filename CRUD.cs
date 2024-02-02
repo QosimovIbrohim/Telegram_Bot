@@ -1,6 +1,4 @@
-﻿
-
-using System.Text.Json;
+﻿using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramBot

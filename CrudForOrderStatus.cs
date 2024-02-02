@@ -77,7 +77,7 @@ namespace Telegram_Bot
                 return new List<Categorie>();
             }
         }
-        public static void SaveCats(List<Categorie> categories)
+        public static void SaveCats(List<Categorie> categories) 
         {
             string json = JsonSerializer.Serialize(categories);
             System.IO.File.WriteAllText(path, json);
@@ -89,3 +89,4 @@ namespace Telegram_Bot
         public long price;
     }
 }
+   
