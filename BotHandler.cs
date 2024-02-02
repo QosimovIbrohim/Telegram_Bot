@@ -199,6 +199,32 @@ namespace Telegram_Bot
                     {
                         CRUD.ChangeStatusCode(chatId, 0);
                     }
+                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 3)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 5)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 6)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 7)
+                    {
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
+
+
                 }
 
                 switch (CRUD.GetStatusCode(chatId))
