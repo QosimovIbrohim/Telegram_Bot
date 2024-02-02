@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Telegram_Bot
@@ -10,9 +11,9 @@ namespace Telegram_Bot
     {
         public static string path = @"C:\Users\user\Desktop\Categpries.json";
 
-        public static void Create(Statuse ct)
+        public static void Create(Categories ct)
         {
-            List<Statuse> categories = GetAllCats();
+            List<Categories> categories = GetAllCats();
             if (categories.Any(c => c.Category_name == ct.Category_name))
             {
                 return;
@@ -23,8 +24,8 @@ namespace Telegram_Bot
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<Statuse> categories = GetAllCats();
-            foreach (Statuse c in categories)
+            List<Categories> categories = GetAllCats();
+            foreach (Categories c in categories)
             {
                 sb.Append(c.Category_name + " ");
             }
@@ -35,7 +36,7 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Statuse> categories = GetAllCats();
+                List<Categories> categories = GetAllCats();
                 if (categories != null)
                 {
                     int index = categories.FindIndex(name => name.Category_name == new_name);
@@ -53,7 +54,7 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Statuse> categories = GetAllCats();
+                List<Categories> categories = GetAllCats();
                 var catToRemove = categories.Find(ct => ct.Category_name == del_name);
 
                 if (catToRemove != null)
@@ -64,29 +65,28 @@ namespace Telegram_Bot
             }
             catch { }
         }
-        public static List<Statuse> GetAllCats()
+        public static List<Categories> GetAllCats()
         {
 
             if (System.IO.File.Exists(path))
             {
                 string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<Statuse>>(json) ?? new List<Statuse>();
+                return JsonSerializer.Deserialize<List<Categories>>(json) ?? new List<Categories>();
             }
             else
             {
-                return new List<Statuse>();
+                return new List<Categories>();
             }
         }
-        public static void SaveCats(List<Statuse> categories) 
+        public static void SaveCats(List<Categories> categories)
         {
             string json = JsonSerializer.Serialize(categories);
             System.IO.File.WriteAllText(path, json);
         }
     }
-    public class Statuse
+    public class Categories
     {
         public string Category_name;
         public long price;
-    }
     }
 }

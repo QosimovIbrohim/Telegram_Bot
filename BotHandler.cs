@@ -188,64 +188,64 @@ namespace Telegram_Bot
                     CRUD.ChangeStatusCode(chatId, 4);
                 }
                 else if (message.Text == "Change Status")
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
                     CRUD.ChangeStatusCode(chatId, 5);
-                }`   
+            }
                 else if (message.Text == "GetExelFormat")
+            {
+                CRUD.ChangeStatusCode(chatId, 6);
+            }
+            else if (message.Text == "GetCustomerList")
+            {
+                CRUD.ChangeStatusCode(chatId, 7);
+            }
+            else if (message.Text == "Add Admin")
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "Enter admin chatId",
+                    cancellationToken: cancellationToken);
+                return;
+            }
+            else if (message.Text == "Back")
+            {
+                if (CRUD.GetStatusCode(chatId) == 1)
                 {
-                    CRUD.ChangeStatusCode(chatId, 6);
+                    CRUD.ChangeStatusCode(chatId, 0);
                 }
-                else if (message.Text == "GetCustomerList")
+                else if (CRUD.GetStatusCode(chatId) == 2)
                 {
-                    CRUD.ChangeStatusCode(chatId, 7);
+                    CRUD.ChangeStatusCode(chatId, 0);
                 }
-                else if(message.Text == "Add Admin")
+                else if (CRUD.GetStatusCode(chatId) == 3)
                 {
-                    await botClient.SendTextMessageAsync(
-                        chatId:chatId,
-                        text:"Enter admin chatId",
-                        cancellationToken:cancellationToken);
-                    return;
+                    CRUD.ChangeStatusCode(chatId, 0);
                 }
-                else if (message.Text == "Back")
+                else if (CRUD.GetStatusCode(chatId) == 4)
                 {
-                    if (CRUD.GetStatusCode(chatId) == 1)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 2)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 3)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 4)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 5)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 6)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 7)
-                    {
-                        CRUD.ChangeStatusCode(chatId, 0);
-                    }
-
-
+                    CRUD.ChangeStatusCode(chatId, 0);
+                }
+                else if (CRUD.GetStatusCode(chatId) == 5)
+                {
+                    CRUD.ChangeStatusCode(chatId, 0);
+                }
+                else if (CRUD.GetStatusCode(chatId) == 6)
+                {
+                    CRUD.ChangeStatusCode(chatId, 0);
+                }
+                else if (CRUD.GetStatusCode(chatId) == 7)
+                {
+                    CRUD.ChangeStatusCode(chatId, 0);
                 }
 
-                switch (CRUD.GetStatusCode(chatId))
-                {
-                    case 0:
-                        ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
-                        {
+
+            }
+
+            switch (CRUD.GetStatusCode(chatId))
+            {
+                case 0:
+                    ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+                    {
                             new[]
                             {
 
@@ -262,19 +262,19 @@ namespace Telegram_Bot
                                 new KeyboardButton("Add Admin")
                             },
                         })
-                        {
-                            ResizeKeyboard = true
-                        };
+                    {
+                        ResizeKeyboard = true
+                    };
 
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: message.Text,
-                            replyMarkup: replyKeyboardMarkup,
-                            cancellationToken: cancellationToken);
-                        break;
-                    case 1:
-                        ReplyKeyboardMarkup replyKeyboardMarkup2 = new(new[]
-                       {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message.Text,
+                        replyMarkup: replyKeyboardMarkup,
+                        cancellationToken: cancellationToken);
+                    break;
+                case 1:
+                    ReplyKeyboardMarkup replyKeyboardMarkup2 = new(new[]
+                   {
                             new[]
                             {
 
@@ -288,18 +288,18 @@ namespace Telegram_Bot
                                new KeyboardButton("Back")
                            }
                         })
-                        {
-                            ResizeKeyboard = true
-                        };
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: message.Text,
-                            replyMarkup: replyKeyboardMarkup2,
-                            cancellationToken: cancellationToken);
-                        break;
-                    case 2:
-                        ReplyKeyboardMarkup replyKeyboardMarkup3 = new(new[]
-                       {
+                    {
+                        ResizeKeyboard = true
+                    };
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message.Text,
+                        replyMarkup: replyKeyboardMarkup2,
+                        cancellationToken: cancellationToken);
+                    break;
+                case 2:
+                    ReplyKeyboardMarkup replyKeyboardMarkup3 = new(new[]
+                   {
                             new[]
                             {
 
@@ -313,19 +313,19 @@ namespace Telegram_Bot
                                new KeyboardButton("Back")
                            }
                         })
-                        {
-                            ResizeKeyboard = true
-                        };
+                    {
+                        ResizeKeyboard = true
+                    };
 
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: message.Text,
-                            replyMarkup: replyKeyboardMarkup3,
-                            cancellationToken: cancellationToken);
-                        break;
-                    case 3:
-                        ReplyKeyboardMarkup replyKeyboardMarkup4 = new(new[]
-                       {
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message.Text,
+                        replyMarkup: replyKeyboardMarkup3,
+                        cancellationToken: cancellationToken);
+                    break;
+                case 3:
+                    ReplyKeyboardMarkup replyKeyboardMarkup4 = new(new[]
+                   {
                             new[]
                             {
 
@@ -339,18 +339,18 @@ namespace Telegram_Bot
                                new KeyboardButton("Back")
                            }
                         })
-                        {
-                            ResizeKeyboard = true
-                        };
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: message.Text,
-                            replyMarkup: replyKeyboardMarkup4,
-                            cancellationToken: cancellationToken);
-                        break;
-                    case 4:
-                        ReplyKeyboardMarkup replyKeyboardMarkup5 = new(new[]
-                       {
+                    {
+                        ResizeKeyboard = true
+                    };
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message.Text,
+                        replyMarkup: replyKeyboardMarkup4,
+                        cancellationToken: cancellationToken);
+                    break;
+                case 4:
+                    ReplyKeyboardMarkup replyKeyboardMarkup5 = new(new[]
+                   {
                             new[]
                             {
 
@@ -364,27 +364,27 @@ namespace Telegram_Bot
                                new KeyboardButton("Back")
                            }
                         })
-                        {
-                            ResizeKeyboard = true
-                        };
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: message.Text,
-                            replyMarkup: replyKeyboardMarkup5,
-                            cancellationToken: cancellationToken);
-                        break;
-                    default:
-                        break;
+                    {
+                        ResizeKeyboard = true
+                    };
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: message.Text,
+                        replyMarkup: replyKeyboardMarkup5,
+                        cancellationToken: cancellationToken);
+                    break;
+                default:
+                    break;
 
 
 
-
-                }
 
             }
 
-
         }
+
+
+
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
@@ -400,7 +400,8 @@ namespace Telegram_Bot
         {
             foreach (long a in Admins)
             {
-                if (a == id) return true;
+                if (a == id) 
+                    return true;
             }
             return false;
         }

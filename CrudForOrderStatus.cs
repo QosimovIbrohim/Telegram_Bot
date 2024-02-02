@@ -8,85 +8,84 @@ namespace Telegram_Bot
 {
     public static class CrudForOrderStatus
     {
-        public static string path = @"C:\Users\user\Desktop\Categpries.json";
+        public static string path = @"C:\Users\user\Desktop\OrderSatus.json";
 
-        public static void Create(Categorie ct)
+        public static void Create(OrderStatus ct)
         {
-            List<Categorie> categories = GetAllCats();
-            if (categories.Any(c => c.Category_name == ct.Category_name))
+            List<OrderStatus> orders = GetAllCats();
+            if (orders.Any(c => c.korzinka_id == ct.korzinka_id))
             {
                 return;
             }
-            categories.Add(ct);
-            SaveCats(categories);
+            orders.Add(ct);
+            SaveCats(orders);
         }
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<Categorie> categories = GetAllCats();
-            foreach (Categorie c in categories)
+            List<OrderStatus> orders = GetAllCats();
+            foreach (OrderStatus c in orders)
             {
-                sb.Append(c.Category_name + " ");
+                sb.Append($"Korzinka_id: {c.korzinka_id}\nOrder Status: {c.status}");
             }
             return sb.ToString();
         }
 
-        public static void Update(string new_name)
+        public static void Update(int id,string new_status)
         {
             try
             {
-                List<Categorie> categories = GetAllCats();
-                if (categories != null)
+                List<OrderStatus> orders = GetAllCats();
+                if (orders != null)
                 {
-                    int index = categories.FindIndex(name => name.Category_name == new_name);
+                    int index = orders.FindIndex(name => name.korzinka_id == id);
                     if (index != -1)
                     {
-                        categories[index].Category_name = new_name;
-                        SaveCats(categories);
+                        orders[index].status = new_status;
+                        SaveCats(orders);
                     }
                 }
             }
             catch { }
         }
 
-        public static void Delete(string del_name)
+        public static void Delete(int id)
         {
             try
             {
-                List<Categorie> categories = GetAllCats();
-                var catToRemove = categories.Find(ct => ct.Category_name == del_name);
+                List<OrderStatus> orders = GetAllCats();
+                var catToRemove = orders.Find(ct => ct.korzinka_id == id);
 
                 if (catToRemove != null)
                 {
-                    categories.Remove(catToRemove);
-                    SaveCats(categories);
+                    orders.Remove(catToRemove);
+                    SaveCats(orders);
                 }
             }
             catch { }
         }
-        public static List<Categorie> GetAllCats()
+        public static List<OrderStatus> GetAllCats()
         {
 
             if (System.IO.File.Exists(path))
             {
                 string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<Categorie>>(json) ?? new List<Categorie>();
+                return JsonSerializer.Deserialize<List<OrderStatus>>(json) ?? new List<OrderStatus>();
             }
             else
             {
-                return new List<Categorie>();
+                return new List<OrderStatus>();
             }
         }
-        public static void SaveCats(List<Categorie> categories) 
+        public static void SaveCats(List<OrderStatus> orders)
         {
-            string json = JsonSerializer.Serialize(categories);
+            string json = JsonSerializer.Serialize(orders);
             System.IO.File.WriteAllText(path, json);
         }
     }
-    public class Categorie
+    public class OrderStatus
     {
-        public string Category_name;
-        public long price;
+        public int korzinka_id;
+        public string status;
     }
 }
-   
