@@ -51,7 +51,6 @@ namespace TelegramBot
         }
         public static void Update(long chatId, string newPhoneNumber)
         {
-
             try
             {
                 List<BotUser> users = GetAllChats();
