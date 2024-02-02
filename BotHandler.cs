@@ -124,6 +124,7 @@ namespace Telegram_Bot
                 return;
             }
 
+
             if (CRUD.IsPhoneNumberNull(chatId) == false)
             {
 
@@ -134,7 +135,7 @@ namespace Telegram_Bot
                 {
                     ResizeKeyboard = true
                 };
-                await botClient.SendTextMessageAsync(
+            await botClient.SendTextMessageAsync(
                  chatId: chatId,
                  text: "Botdan to'liq foydalanish uchun telefon raqamingizni jo'nating!",
                  replyMarkup: replyKeyboardMarkup,
