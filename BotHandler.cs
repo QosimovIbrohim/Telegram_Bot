@@ -6,6 +6,7 @@ using Telegram.Bot;
 using System.Reflection.Metadata;
 using Telegram.Bot.Types;
 using Telegram.Bot.Exceptions;
+using Newtonsoft.Json.Serialization;
 
 namespace Telegram_Bot
 {
@@ -45,9 +46,20 @@ namespace Telegram_Bot
             cts.Cancel();
         }
 
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient,Update update, CancellationToken cancellationToken)
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            if (update.Message is not { } message)
+                return;
 
+            long chatId = message.Chat.Id;
+            if (message.Text != null)
+            {
+
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: message.Text,
+                    cancellationToken: cancellationToken);
+            }
         }
 
 
