@@ -55,5 +55,4 @@ namespace Telegram_Bot
             }
             catch { }
         }
-namespace Q QQ                      aswaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaxDsswwwwwwwwwwwwwwwwwwwwwwwwwwwwwww21                                                                                                              ``````````````````      }
 }
