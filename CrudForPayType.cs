@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace Telegram_Bot
 {
-    public class CrudForPayType
+    public class PayType
     {
+        public string cash { get; set; }
+        public string card { get; set; }
+        public string clice { get; set; }
+
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\PayTypes.json";
 
         public static void Create(PayType pay)
         {
             List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
-            if (categories.Any(c => c.Name == pay.Name))
+            if (categories.Any(c => c.cash == pay.cash))
             {
                 return;
             }
@@ -27,7 +31,7 @@ namespace Telegram_Bot
             List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
             foreach (PayType c in categories)
             {
-                sb.Append($"Name: {c.Name}\n");
+                sb.Append($"Name: {c.cash}\n");
             }
             return sb.ToString();
         }
@@ -36,13 +40,13 @@ namespace Telegram_Bot
         {
             try
             {
-                List < PayType > categories = DeserializeSerialize<PayType>.GetAll(path);
+                List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
                 if (categories != null)
                 {
-                    int index = categories.FindIndex(name => name.Name == last_name);
+                    int index = categories.FindIndex(name => name.cash == last_name);
                     if (index != -1)
                     {
-                        categories[index].Name = new_name;
+                        categories[index].cash = new_name;
                         DeserializeSerialize<PayType>.Save(categories, path);
 
                     }
@@ -56,22 +60,16 @@ namespace Telegram_Bot
             try
             {
                 List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
-                var catToRemove = categories.Find(ct => ct.Name == del_name);
+                var catToRemove = categories.Find(ct => ct.cash == del_name);
 
                 if (catToRemove != null)
                 {
                     categories.Remove(catToRemove);
-                    DeserializeSerialize<PayType>.Save(categories path);
+                    DeserializeSerialize<PayType>.Save(categories, path);
                 }
             }
             catch { }
         }
-    }
-    public class PayType
-    {
-        public string cash { get; set; }
-        public string card { get; set; }
-        public string clice { get; set; }
     }
 }
 

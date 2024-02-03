@@ -323,7 +323,7 @@ namespace Telegram_Bot
                         case 4:
                             CrudForPayType.Create(new PayType()
                             {
-                                Name = message.Text,
+                                cash = message.Text,
                             });
                             await botClient.SendTextMessageAsync(
                              chatId: chatId,
