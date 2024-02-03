@@ -10,7 +10,7 @@ namespace Telegram_Bot
     public static class DeserializeSerialize<T>
     {
         public static List<T> GetAll(string path)
-        {
+        { 
 
             if (System.IO.File.Exists(path))
             {
