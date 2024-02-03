@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.ComponentModel;
 
 namespace Telegram_Bot
-{
+{hfajfja=
     public class BotHandler
     {
         public string botToken { get; set; }
@@ -154,7 +154,7 @@ namespace Telegram_Bot
                 };
                 await botClient.SendTextMessageAsync(
                      chatId: chatId,
-                     text: "Botdan to'liq foydalanish uchun telefon raqamingizni jo'nating!",
+                     text: "Botdan to'liq foydalanish uchun telefon raqami    ngizni jo'nating!",
                      replyMarkup: replyKeyboardMarkup,
                      cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
