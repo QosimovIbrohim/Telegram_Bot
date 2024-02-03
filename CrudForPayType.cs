@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Telegram_Bot
 {
     public class CrudForPayType
     {
-        public static string path = @"C:\Users\user\Desktop\Categpries.json";
+        public static string path = @"C:\Users\user\Desktop\PayTypes.json";
 
         public static void Create(PayType pay)
         {
             List<PayType> categories = GetAllCats();
-            if (categories.Any(c => c.Category_name == pay.Category_name))
+            if (categories.Any(c => c.Name == pay.Name))
             {
                 return;
             }
@@ -26,22 +27,22 @@ namespace Telegram_Bot
             List<PayType> categories = GetAllCats();
             foreach (PayType c in categories)
             {
-                sb.Append(c.Category_name + " ");
+                sb.Append($"Name: {c.Name}\n");
             }
             return sb.ToString();
         }
 
-        public static void Update(string new_name)
+        public static void Update(string last_name, string new_name)
         {
             try
             {
                 List<PayType> categories = GetAllCats();
                 if (categories != null)
                 {
-                    int index = categories.FindIndex(name => name.Category_name == new_name);
+                    int index = categories.FindIndex(name => name.Name == last_name);
                     if (index != -1)
                     {
-                        categories[index].Category_name = new_name;
+                        categories[index].Name = new_name;
                         SaveCats(categories);
                     }
                 }
@@ -54,7 +55,7 @@ namespace Telegram_Bot
             try
             {
                 List<PayType> categories = GetAllCats();
-                var catToRemove = categories.Find(ct => ct.Category_name == del_name);
+                var catToRemove = categories.Find(ct => ct.Name == del_name);
 
                 if (catToRemove != null)
                 {
@@ -85,8 +86,7 @@ namespace Telegram_Bot
     }
     public class PayType
     {
-        public string ;
-        public ;
+        public string Name;
     }
 }
-}
+
