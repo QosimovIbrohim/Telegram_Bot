@@ -4,25 +4,27 @@ using System.Text.Json.Serialization;
 
 namespace Telegram_Bot
 {
-    public static class CRDForAdmin
+    public class Admin
     {
+        public long chatId { get; set; }
+
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\Admins.json";
 
         public static void Create(Admin admiin)
         {
-            List<Admin> admins = GetAllAdmins();
+            List<Admin> admins = DeserializeSerialize<Admin>.GetAll(path);
             if (admins.Any(c => c.chatId == admiin.chatId))
             {
                 return;
             }
             admins.Add(admiin);
-            SaveAdmins(admins);
+            DeserializeSerialize<Admin>.Save(admins, path);
         }
 
         public static string Read()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            List<Admin> admins = GetAllAdmins();
+            List<Admin> admins = DeserializeSerialize<Admin>.GetAll(path);
             foreach (Admin admin in admins)
             {
                 stringBuilder.Append($"{admin.chatId}\n");
@@ -31,7 +33,7 @@ namespace Telegram_Bot
         }
         public static bool isAdmin(long chatId)
         {
-            List<Admin> admins = GetAllAdmins();
+            List<Admin> admins = DeserializeSerialize<Admin>.GetAll(path);
             if (admins.Any(c => c.chatId == chatId))
             {
                 return true;
@@ -42,50 +44,16 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Admin> admins = GetAllAdmins();
+                List<Admin> admins = DeserializeSerialize<Admin>.GetAll(path);
                 var catToRemove = admins.Find(ct => ct.chatId == chatId);
 
                 if (catToRemove != null)
                 {
                     admins.Remove(catToRemove);
-                    SaveAdmins(admins);
+                    DeserializeSerialize<Admin>.Save(admins,path);
                 }
             }
             catch { }
         }
-        public static List<Admin> GetAllAdmins()
-        {
-
-            if (System.IO.File.Exists(path))
-            {
-                using (StreamReader sm = new StreamReader(path))
-                {
-                    string json = sm.ReadToEnd();
-                    if(!string.IsNullOrEmpty(json))
-                        return JsonSerializer.Deserialize<List<Admin>>(json)!;
-                    else
-                        return new List<Admin>();
-                }
-            }
-            else
-            {
-                return new List<Admin>();
-            }
-        }
-        public static void SaveAdmins(List<Admin> admins)
-        {
-            string json = JsonSerializer.Serialize<List<Admin>>(admins);
-            using (StreamWriter sw = new StreamWriter(path))
-            {
-               sw.Write(json);
-            }
-        }
-
-    }
-
-    public class Admin
-    {
-        
-        public long chatId { get; set; }
     }
 }

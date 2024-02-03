@@ -6,21 +6,23 @@ using System.Text.Json;
 
 namespace Telegram_Bot
 {
-    public class CrudForCategory
+    public class Categories
     {
+        public string Category_name { get; set; }
+
         private static readonly string path = @"C:\Users\user\Desktop\DatabseFolders\Categories.json";
 
         public static void Create(Categories ct)
         {
             try
             {
-                List<Categories> categories = GetAllCats();
+                List<Categories> categories = DeserializeSerialize<Categories>.GetAll(path);
                 if (categories.Any(c => c.Category_name == ct.Category_name))
                 {
                     return;
                 }
                 categories.Add(ct);
-                SaveCats(categories);
+                DeserializeSerialize<Categories>.Save(categories, path);
             }
             catch
             {
@@ -32,7 +34,7 @@ namespace Telegram_Bot
             try
             {
                 StringBuilder sb = new StringBuilder();
-                List<Categories> categories = GetAllCats();
+                List<Categories> categories = DeserializeSerialize<Categories>.GetAll(path);
                 foreach (Categories c in categories)
                 {
                     sb.Append($"Name: {c.Category_name}\n");
@@ -49,19 +51,19 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Categories> categories = GetAllCats();
+                List<Categories> categories = DeserializeSerialize<Categories>.GetAll(path);
                 if (categories != null)
                 {
                     int index = categories.FindIndex(name => name.Category_name == new_name);
                     if (index != -1)
                     {
                         categories[index].Category_name = new_name;
-                        SaveCats(categories);
+                        DeserializeSerialize<Categories>.Save(categories, path);
                     }
 
                 }
             }
-            catch 
+            catch
             {
             }
         }
@@ -70,57 +72,20 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Categories> categories = GetAllCats();
+                List<Categories> categories = DeserializeSerialize<Categories>.GetAll(path);
                 var catToRemove = categories.Find(ct => ct.Category_name == del_name);
 
                 if (catToRemove != null)
                 {
                     categories.Remove(catToRemove);
-                    SaveCats(categories);
+                    DeserializeSerialize<Categories>.Save(categories, path);
                 }
-              
+
             }
             catch
             {
-                
-            }
-        }
 
-        public static List<Categories> GetAllCats()
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    string json = File.ReadAllText(path);
-                    return JsonSerializer.Deserialize<List<Categories>>(json) ?? new List<Categories>();
-                }
-                else
-                {
-                    return new List<Categories>();
-                }
             }
-            catch
-            {
-                return new List<Categories>();
-            }
-        }
-
-        public static void SaveCats(List<Categories> categories)
-        {
-            try
-            {
-                string json = JsonSerializer.Serialize(categories);
-                File.WriteAllText(path, json);
-            }
-            catch
-            {
-            }
-        }
-
-        public class Categories
-        {
-            public string Category_name { get; set; }
         }
     }
 }

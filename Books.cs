@@ -7,24 +7,28 @@ using System.Threading.Tasks;
 
 namespace Telegram_Bot
 {
-    public class CrudForBook
+    public class Books
     {
+        public string Name { get; set; }
+        public string Author { get; set; }
+        public long price { get; set; }
+        public string Category_name { get; set; }
+
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\Books.json";
 
         public static void Create(Books bk)
         {
-            List<Books> books = GetAllCats();
+            List<Books> books = DeserializeSerialize<Books>.GetAll(path);
             if (books.Any(c => c.Name == bk.Name))
             {
                 return;
             }
-            books.Add(bk);
-            SaveCats(books);
+            DeserializeSerialize<Books>.Save(books, path);
         }
         public static string Read()
         {
             StringBuilder builder = new StringBuilder();
-            List<Books> books = GetAllCats();
+            List<Books> books = DeserializeSerialize<Books>.GetAll(path);
             foreach (Books c in books)
             {
                 builder.Append($"Book name:{c.Name}\n" +
@@ -39,14 +43,14 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Books> books = GetAllCats();
+                List<Books> books = DeserializeSerialize<Books>.GetAll(path);
                 if (books != null)
                 {
                     int index = books.FindIndex(name => name.Name == last_name);
                     if (index != -1)
                     {
                         books[index].Name = new_name;
-                        SaveCats(books);
+                        DeserializeSerialize<Books>.Save(books, path);
                     }
                 }
             }
@@ -57,42 +61,17 @@ namespace Telegram_Bot
         {
             try
             {
-                List<Books> books = GetAllCats();
+                List<Books> books = DeserializeSerialize<Books>.GetAll(path);
                 var catToRemove = books.Find(ct => ct.Category_name == del_name);
 
                 if (catToRemove != null)
                 {
                     books.Remove(catToRemove);
-                    SaveCats(books);
+                    DeserializeSerialize<Books>.Save(books, path);
                 }
             }
             catch { }
         }
-        public static List<Books> GetAllCats()
-        {
-
-            if (System.IO.File.Exists(path))
-            {
-                string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<Books>>(json) ?? new List<Books>();
-            }
-            else
-            {
-                return new List<Books>();
-            }
-        }
-        public static void SaveCats(List<Books> books)
-        {
-            string json = JsonSerializer.Serialize(books);
-            System.IO.File.WriteAllText(path, json);
-        }
-    }
-    public class Books
-    {
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public long price { get; set; } 
-        public string Category_name { get; set; }
     }
 }
 
