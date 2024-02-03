@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.ComponentModel;
 
 namespace Telegram_Bot
-{hfajfja=
+{
     public class BotHandler
     {
         public string botToken { get; set; }
@@ -75,7 +75,7 @@ namespace Telegram_Bot
 
             long chatId = message.Chat.Id;
 
-            CRUD.Create(new TelegramBot.BotUsers()
+            CRUD.Create(new BotUser()
             {
                 chatID = chatId,
                 status = 0,
@@ -162,7 +162,7 @@ namespace Telegram_Bot
             // change qilinmasin
             Console.WriteLine(chatId);
 
-            if (CRDForAdmin.isAdmin(chatId) == true)
+            if (Admin.isAdmin(chatId) == true)
             {
 
                 if (message.Text == "Category")
@@ -234,7 +234,7 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        CRDForAdmin.Create(new Admin()
+                        Admin.Create(new Admin()
                         {
                             chatId = messageAsLong
                         });
@@ -278,6 +278,10 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 4;
                     }
+                    else if(message.Text == "Read")
+                    {
+
+                    }
                     return;
                 }
                 if (message.Text != null)
@@ -286,7 +290,7 @@ namespace Telegram_Bot
                     switch (InfoStatus)
                     {
                         case 1:
-                            CrudForCategory.Create(new CrudForCategory.Categories()
+                            Categories.Create(new Categories()
                             {
                                 Category_name = message.Text
                             });
@@ -294,10 +298,10 @@ namespace Telegram_Bot
                                 chatId: chatId,
                                 text: "Muvaffaqiyatli yaratildi",
                                 cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 2:
                             string[] book = message.Text.Split(',');
-                            CrudForBook.Create(new Books()
+                            Books.Create(new Books()
                             {
                                 Name = book[0],
                                 Author = book[1],
@@ -308,9 +312,9 @@ namespace Telegram_Bot
                               chatId: chatId,
                               text: "Muvaffaqiyatli yaratildi",
                               cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 3:
-                            CrudForOrderStatus.Create(new OrderStatus()
+                            OrderStatus.Create(new OrderStatus()
                             {
                                 korzinka_id = kr_id++
 
@@ -319,9 +323,9 @@ namespace Telegram_Bot
                              chatId: chatId,
                              text: "Muvaffaqiyatli yaratildi",
                              cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 4:
-                            CrudForPayType.Create(new PayType()
+                            PayType.Create(new PayType()
                             {
                                 cash = message.Text,
                             });
