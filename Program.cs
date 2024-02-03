@@ -5,7 +5,7 @@ class Program
     static async Task Main(string[] args)
     {
         string token = "6591466293:AAFExqxBSo0Bym4bTpaOd2szwP4Kdz4gZe4";
-        CRDForAdmin.Create(new Admin()
+        Admin.Create(new Admin()
         {
             chatId = 5569322769
         });
