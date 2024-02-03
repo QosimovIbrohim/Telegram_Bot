@@ -5,11 +5,11 @@ namespace TelegramBot
 {
     public static class CRUD
     {
-        public static string filePath = @"C:\Users\user\Desktop\DatabseFolders\Database.json";
+        public static string filePath = @"C:\Users\user\Desktop\Database.json";
 
-        public static void Create(BotUsers chat)
+        public static void Create(BotUser chat)
         {
-            List<BotUsers> chats = GetAllChats();
+            List<BotUser> chats = GetAllChats();
             if (chats.Any(c => c.chatID == chat.chatID))
             {
                 return;
@@ -21,7 +21,7 @@ namespace TelegramBot
 
         public static string Read(long chatId)
         {
-            List<BotUsers> chats = GetAllChats();
+            List<BotUser> chats = GetAllChats();
             var chat = chats.Find(c => c.chatID == chatId);
 
             if (chat != null)
@@ -35,7 +35,7 @@ namespace TelegramBot
         }
         public static bool IsPhoneNumberNull(long chatId)
         {
-            List<BotUsers> chats = GetAllChats();
+            List<BotUser> chats = GetAllChats();
             var chat = chats.Find(c => c.chatID == chatId);
 
             if (chat != null && chat.phoneNumber != "")
@@ -51,7 +51,7 @@ namespace TelegramBot
         {
             try
             {
-                List<BotUsers> users = GetAllChats();
+                List<BotUser> users = GetAllChats();
 
                 if (users != null)
                 {
@@ -75,7 +75,7 @@ namespace TelegramBot
 
         public static void Delete(long chatId)
         {
-            List<BotUsers> chats = GetAllChats();
+            List<BotUser> chats = GetAllChats();
             var chatToRemove = chats.Find(c => c.chatID == chatId);
 
             if (chatToRemove != null)
@@ -85,23 +85,23 @@ namespace TelegramBot
             }
         }
 
-        private static List<BotUsers> GetAllChats()
+        private static List<BotUser> GetAllChats()
         {
             if (System.IO.File.Exists(filePath))
             {
                 string json = System.IO.File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<List<BotUsers>>(json) ?? new List<BotUsers>();
+                return JsonSerializer.Deserialize<List<BotUser>>(json) ?? new List<BotUser>();
             }
             else
             {
-                return new List<BotUsers>();
+                return new List<BotUser>();
             }
         }
         public static int GetStatusCode(long chatId)
         {
 
-            List<BotUsers> users = GetAllChats();
-            BotUsers? chatToRemove = users.Find(c => c.chatID == chatId);
+            List<BotUser> users = GetAllChats();
+            BotUser? chatToRemove = users.Find(c => c.chatID == chatId);
 
             return chatToRemove.status;
         }
@@ -109,7 +109,7 @@ namespace TelegramBot
         public static void ChangeStatusCode(long chatId,int statusCode)
         {
 
-            List<BotUsers> users = GetAllChats();
+            List<BotUser> users = GetAllChats();
             int index = users.FindIndex(u => u.chatID == chatId);
             if(index != -1)
             {
@@ -118,18 +118,18 @@ namespace TelegramBot
             SaveChats(users);
         }
 
-        public static List<BotUsers> GetAll()
+        public static List<BotUser> GetAll()
         {
             return GetAllChats();
         }
 
-        private static void SaveChats(List<BotUsers> chats)
-        {
+        private static void SaveChats(List<BotUser> chats)
+        {  
             string json = JsonSerializer.Serialize(chats);
             System.IO.File.WriteAllText(filePath, json);
         }
     }
-    public class BotUsers
+    public class BotUser
     {
         public long chatID { get; set; }
 
