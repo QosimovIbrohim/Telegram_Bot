@@ -278,6 +278,10 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 4;
                     }
+                    else if(message.Text == "Read")
+                    {
+
+                    }
                     return;
                 }
                 if (message.Text != null)
@@ -294,7 +298,7 @@ namespace Telegram_Bot
                                 chatId: chatId,
                                 text: "Muvaffaqiyatli yaratildi",
                                 cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 2:
                             string[] book = message.Text.Split(',');
                             Books.Create(new Books()
@@ -308,7 +312,7 @@ namespace Telegram_Bot
                               chatId: chatId,
                               text: "Muvaffaqiyatli yaratildi",
                               cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 3:
                             OrderStatus.Create(new OrderStatus()
                             {
@@ -319,7 +323,7 @@ namespace Telegram_Bot
                              chatId: chatId,
                              text: "Muvaffaqiyatli yaratildi",
                              cancellationToken: cancellationToken);
-                            break;
+                            return;
                         case 4:
                             PayType.Create(new PayType()
                             {
