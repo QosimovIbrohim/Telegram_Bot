@@ -22,7 +22,6 @@ namespace Telegram_Bot
         {
             botToken = token;
         }
-        public HashSet<long> Admins = new HashSet<long>() { 2016634633, 5569322769 };
 
         public async Task BotHandle()
         {
@@ -76,7 +75,7 @@ namespace Telegram_Bot
 
             long chatId = message.Chat.Id;
 
-            CRUD.Create(new BotUser()
+            CRUD.Create(new TelegramBot.BotUsers()
             {
                 chatID = chatId,
                 status = 0,
@@ -161,15 +160,11 @@ namespace Telegram_Bot
             }
 
             // change qilinmasin
-            if (isAdmin(chatId) == true)
+            Console.WriteLine(chatId);
+
+            if (CRDForAdmin.isAdmin(chatId) == true)
             {
-                /*long messageAsLong;
-                if (long.TryParse(message.Text, out messageAsLong))
-                {
-                    await Admins.Add(messageAsLong);
-                    await botClient.SendTextMessageAsync(chatId: chatId, text: "Succesfully added", cancellationToken: cancellationToken);
-                }
-                break;*/
+
                 if (message.Text == "Category")
                 {
                     CRUD.ChangeStatusCode(chatId, 1);
@@ -236,13 +231,22 @@ namespace Telegram_Bot
                         CRUD.ChangeStatusCode(chatId, 0);
                     }
                 }
+                long messageAsLong;
+                if (long.TryParse(message.Text, out messageAsLong))
+                {
+                        CRDForAdmin.Create(new Admin()
+                        {
+                            chatId = messageAsLong
+                        });
+                    await botClient.SendTextMessageAsync(chatId: chatId, text: "Succesfully added", cancellationToken: cancellationToken);
+                }
                 else if (message.Text == "CREATE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "iltimos yangi kategoriya nomini yuboring",
+                            text: "Iltimos yangi kategoriya nomini yuboring",
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 1;
@@ -251,7 +255,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "iltimos yangi book nomini,muallifini,narxini,category ini yuboring yuboring",
+                            text: "Iltimos yangi book nomini,muallifini,narxini,category ini yuboring yuboring",
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 2;
@@ -260,7 +264,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "iltimos yangi order statusini yuboring",
+                            text: "Iltimos yangi order statusini yuboring",
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 3;
@@ -269,7 +273,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "iltimos yangi payment turini yuboring",
+                            text: "Iltimos yangi payment turini yuboring",
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 4;
@@ -309,6 +313,7 @@ namespace Telegram_Bot
                             CrudForOrderStatus.Create(new OrderStatus()
                             {
                                 korzinka_id = kr_id++
+
                             });
                             await botClient.SendTextMessageAsync(
                              chatId: chatId,
@@ -422,15 +427,6 @@ namespace Telegram_Bot
                 text: update.Message.Text,
                 replyMarkup: replyKeyboardMarkup4,
                 cancellationToken: cancellationToken);
-        }
-        public bool isAdmin(long id)
-        {
-            foreach (long a in Admins)
-            {
-                if (a == id)
-                    return true;
-            }
-            return false;
         }
     }
 }

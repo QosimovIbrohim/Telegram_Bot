@@ -8,22 +8,22 @@ namespace Telegram_Bot
 {
     public static class CrudForOrderStatus
     {
-        public static string path = @"C:\Users\user\Desktop\OrderSatus.json";
+        public static string path = @"C:\Users\user\Desktop\DatabseFolders\OrderSatus.json";
 
         public static void Create(OrderStatus ct)
         {
-            List<OrderStatus> orders = GetAllCats();
+            List<OrderStatus> orders = GetAllOrders();
             if (orders.Any(c => c.korzinka_id == ct.korzinka_id))
             {
                 return;
             }
             orders.Add(ct);
-            SaveCats(orders);
+            SaveOrders(orders);
         }
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<OrderStatus> orders = GetAllCats();
+            List<OrderStatus> orders = GetAllOrders();
             foreach (OrderStatus c in orders)
             {
                 sb.Append($"Korzinka_id: {c.korzinka_id}\nOrder Status: {c.status}");
@@ -35,14 +35,14 @@ namespace Telegram_Bot
         {
             try
             {
-                List<OrderStatus> orders = GetAllCats();
+                List<OrderStatus> orders = GetAllOrders();
                 if (orders != null)
                 {
                     int index = orders.FindIndex(name => name.korzinka_id == id);
                     if (index != -1)
                     {
                         orders[index].status = new_status;
-                        SaveCats(orders);
+                        SaveOrders(orders);
                     }
                 }
             }
@@ -53,18 +53,18 @@ namespace Telegram_Bot
         {
             try
             {
-                List<OrderStatus> orders = GetAllCats();
+                List<OrderStatus> orders = GetAllOrders();
                 var catToRemove = orders.Find(ct => ct.korzinka_id == id);
 
                 if (catToRemove != null)
                 {
                     orders.Remove(catToRemove);
-                    SaveCats(orders);
+                    SaveOrders(orders);
                 }
             }
             catch { }
         }
-        public static List<OrderStatus> GetAllCats()
+        public static List<OrderStatus> GetAllOrders()
         {
 
             if (System.IO.File.Exists(path))
@@ -77,7 +77,7 @@ namespace Telegram_Bot
                 return new List<OrderStatus>();
             }
         }
-        public static void SaveCats(List<OrderStatus> orders)
+        public static void SaveOrders(List<OrderStatus> orders)
         {
             string json = JsonSerializer.Serialize(orders);
             System.IO.File.WriteAllText(path, json);
@@ -85,7 +85,7 @@ namespace Telegram_Bot
     }
     public class OrderStatus
     {
-        public int korzinka_id;
-        public string status;
+        public int korzinka_id { get; set; }
+        public string status { get; set; }
     }
 }

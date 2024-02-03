@@ -8,7 +8,7 @@ namespace Telegram_Bot
 {
     public class CrudForCategory
     {
-        private static readonly string path = @"C:\Users\user\Desktop\Categories.json";
+        private static readonly string path = @"C:\Users\user\Desktop\DatabseFolders\Categories.json";
 
         public static void Create(Categories ct)
         {
@@ -120,7 +120,7 @@ namespace Telegram_Bot
 
         public class Categories
         {
-            public string Category_name;
+            public string Category_name { get; set; }
         }
     }
 }

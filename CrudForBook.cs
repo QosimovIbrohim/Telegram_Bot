@@ -9,7 +9,7 @@ namespace Telegram_Bot
 {
     public class CrudForBook
     {
-        public static string path = @"C:\Users\user\Desktop\Books.json";
+        public static string path = @"C:\Users\user\Desktop\DatabseFolders\Books.json";
 
         public static void Create(Books bk)
         {
@@ -89,10 +89,10 @@ namespace Telegram_Bot
     }
     public class Books
     {
-        public string Name;
-        public string Author;
-        public long price;
-        public string Category_name;
+        public string Name { get; set; }
+        public string Author { get; set; }
+        public long price { get; set; } 
+        public string Category_name { get; set; }
     }
 }
 
