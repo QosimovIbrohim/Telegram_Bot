@@ -9,22 +9,22 @@ namespace Telegram_Bot
 {
     public class CrudForPayType
     {
-        public static string path = @"C:\Users\user\Desktop\PayTypes.json";
+        public static string path = @"C:\Users\user\Desktop\DatabseFolders\PayTypes.json";
 
         public static void Create(PayType pay)
         {
-            List<PayType> categories = GetAllCats();
+            List<PayType> categories = GetAllPayment();
             if (categories.Any(c => c.Name == pay.Name))
             {
                 return;
             }
             categories.Add(pay);
-            SaveCats(categories);
+            SavePayments(categories);
         }
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<PayType> categories = GetAllCats();
+            List<PayType> categories = GetAllPayment();
             foreach (PayType c in categories)
             {
                 sb.Append($"Name: {c.Name}\n");
@@ -36,14 +36,14 @@ namespace Telegram_Bot
         {
             try
             {
-                List<PayType> categories = GetAllCats();
+                List<PayType> categories = GetAllPayment();
                 if (categories != null)
                 {
                     int index = categories.FindIndex(name => name.Name == last_name);
                     if (index != -1)
                     {
                         categories[index].Name = new_name;
-                        SaveCats(categories);
+                        SavePayments(categories);
                     }
                 }
             }
@@ -54,18 +54,18 @@ namespace Telegram_Bot
         {
             try
             {
-                List<PayType> categories = GetAllCats();
+                List<PayType> categories = GetAllPayment();
                 var catToRemove = categories.Find(ct => ct.Name == del_name);
 
                 if (catToRemove != null)
                 {
                     categories.Remove(catToRemove);
-                    SaveCats(categories);
+                    SavePayments(categories);
                 }
             }
             catch { }
         }
-        public static List<PayType> GetAllCats()
+        public static List<PayType> GetAllPayment()
         {
 
             if (System.IO.File.Exists(path))
@@ -78,7 +78,7 @@ namespace Telegram_Bot
                 return new List<PayType>();
             }
         }
-        public static void SaveCats(List<PayType> categories)
+        public static void SavePayments(List<PayType> categories)
         {
             string json = JsonSerializer.Serialize(categories);
             System.IO.File.WriteAllText(path, json);
