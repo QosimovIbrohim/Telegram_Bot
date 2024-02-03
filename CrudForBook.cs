@@ -11,29 +11,7 @@ namespace Telegram_Bot
     {
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\Books.json";
 
-        public static void Create(Books bk)
-        {
-            List<Books> books = GetAllCats();
-            if (books.Any(c => c.Name == bk.Name))
-            {
-                return;
-            }
-            books.Add(bk);
-            SaveCats(books);
-        }
-        public static string Read()
-        {
-            StringBuilder builder = new StringBuilder();
-            List<Books> books = GetAllCats();
-            foreach (Books c in books)
-            {
-                builder.Append($"Book name:{c.Name}\n" +
-                    $"Book Author: {c.Author}\n" +
-                    $"Book Category{c.Category_name}\n" +
-                    $"Book price {c.price}\n");
-            }
-            return builder.ToString();
-        }
+           
 
         public static void Update(string last_name, string new_price, string new_name, string new_author, string new_category_name)
         {
@@ -53,21 +31,7 @@ namespace Telegram_Bot
             catch { }
         }
 
-        public static void Delete(string del_name)
-        {
-            try
-            {
-                List<Books> books = GetAllCats();
-                var catToRemove = books.Find(ct => ct.Category_name == del_name);
-
-                if (catToRemove != null)
-                {
-                    books.Remove(catToRemove);
-                    SaveCats(books);
-                }
-            }
-            catch { }
-        }
+       
         public static List<Books> GetAllCats()
         {
 
