@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 
@@ -8,27 +8,41 @@ namespace Telegram_Bot
 {
     public class CrudForCategory
     {
-        public static string path = @"C:\Users\user\Desktop\Categpries.json";
+        private static readonly string path = @"C:\Users\user\Desktop\Categories.json";
 
         public static void Create(Categories ct)
         {
-            List<Categories> categories = GetAllCats();
-            if (categories.Any(c => c.Category_name == ct.Category_name))
+            try
             {
-                return;
+                List<Categories> categories = GetAllCats();
+                if (categories.Any(c => c.Category_name == ct.Category_name))
+                {
+                    return;
+                }
+                categories.Add(ct);
+                SaveCats(categories);
             }
-            categories.Add(ct);
-            SaveCats(categories);
+            catch
+            {
+            }
         }
+
         public static string Read()
         {
-            StringBuilder sb = new StringBuilder();
-            List<Categories> categories = GetAllCats();
-            foreach (Categories c in categories)
+            try
             {
-                sb.Append(c.Category_name + " ");
+                StringBuilder sb = new StringBuilder();
+                List<Categories> categories = GetAllCats();
+                foreach (Categories c in categories)
+                {
+                    sb.Append($"Name: {c.Category_name}\n");
+                }
+                return sb.ToString();
             }
-            return sb.ToString();
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         public static void Update(string new_name)
@@ -44,9 +58,12 @@ namespace Telegram_Bot
                         categories[index].Category_name = new_name;
                         SaveCats(categories);
                     }
+
                 }
             }
-            catch { }
+            catch 
+            {
+            }
         }
 
         public static void Delete(string del_name)
@@ -61,26 +78,44 @@ namespace Telegram_Bot
                     categories.Remove(catToRemove);
                     SaveCats(categories);
                 }
+              
             }
-            catch { }
+            catch
+            {
+                
+            }
         }
+
         public static List<Categories> GetAllCats()
         {
-
-            if (System.IO.File.Exists(path))
+            try
             {
-                string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<Categories>>(json) ?? new List<Categories>();
+                if (File.Exists(path))
+                {
+                    string json = File.ReadAllText(path);
+                    return JsonSerializer.Deserialize<List<Categories>>(json) ?? new List<Categories>();
+                }
+                else
+                {
+                    return new List<Categories>();
+                }
             }
-            else
+            catch
             {
                 return new List<Categories>();
             }
         }
+
         public static void SaveCats(List<Categories> categories)
         {
-            string json = JsonSerializer.Serialize(categories);
-            System.IO.File.WriteAllText(path, json);
+            try
+            {
+                string json = JsonSerializer.Serialize(categories);
+                File.WriteAllText(path, json);
+            }
+            catch
+            {
+            }
         }
 
         public class Categories
