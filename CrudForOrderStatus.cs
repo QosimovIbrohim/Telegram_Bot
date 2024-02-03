@@ -8,6 +8,8 @@ namespace Telegram_Bot
 {
     public class OrderStatus
     {
+        public int korzinka_id { get; set; }
+        public string status { get; set; }
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\OrderSatus.json";
 
         public static void Create(OrderStatus ct)
@@ -18,7 +20,7 @@ namespace Telegram_Bot
                 return;
             }
             orders.Add(ct);
-            DeserializeSerialize<OrderStatus>.Save(orders,path);
+            DeserializeSerialize<OrderStatus>.Save(orders, path);
         }
         public static string Read()
         {
@@ -64,7 +66,5 @@ namespace Telegram_Bot
             }
             catch { }
         }
-        public int korzinka_id { get; set; }
-        public string status { get; set; }
     }
 }
