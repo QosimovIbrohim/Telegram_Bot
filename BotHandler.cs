@@ -240,6 +240,7 @@ namespace Telegram_Bot
                         });
                     await botClient.SendTextMessageAsync(chatId: chatId, text: "Succesfully added", cancellationToken: cancellationToken);
                 }
+                #region CREATE
                 else if (message.Text == "CREATE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
@@ -280,6 +281,52 @@ namespace Telegram_Bot
                     }
                     return;
                 }
+                #endregion
+
+                #region READ
+                else if (message.Text == "READ")
+                {
+                    if (CRUD.GetStatusCode(chatId) == 1)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Categories.Read()   ,
+                            cancellationToken: cancellationToken
+                            );
+                        InfoStatus = 1;
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos yangi book nomini,muallifini,narxini,category ini yuboring yuboring",
+                            cancellationToken: cancellationToken
+                            );
+                        InfoStatus = 2;
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 3)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos yangi order statusini yuboring",
+                            cancellationToken: cancellationToken
+                            );
+                        InfoStatus = 3;
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos yangi payment turini yuboring",
+                            cancellationToken: cancellationToken
+                            );
+                        InfoStatus = 4;
+                    }
+                    return;
+                }
+                #endregion
+
+
                 if (message.Text != null)
                 {
 
