@@ -162,7 +162,7 @@ namespace Telegram_Bot
             // change qilinmasin
             Console.WriteLine(chatId);
 
-            if (CRDForAdmin.isAdmin(chatId) == true)
+            if (Admin.isAdmin(chatId) == true)
             {
 
                 if (message.Text == "Category")
@@ -234,7 +234,7 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        CRDForAdmin.Create(new Admin()
+                        Admin.Create(new Admin()
                         {
                             chatId = messageAsLong
                         });
@@ -280,13 +280,30 @@ namespace Telegram_Bot
                     }
                     return;
                 }
+                else if (message.Text == "READ")
+                {
+                    if(CRUD.GetStatusCode(chatId)==1)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Categories.Read(),
+                            cancellationToken: cancellationToken);
+                    }
+                    else if(CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Books.Read(),
+                            cancellationToken:cancellationToken);
+                    }
+                }
                 if (message.Text != null)
                 {
 
                     switch (InfoStatus)
                     {
                         case 1:
-                            CrudForCategory.Create(new CrudForCategory.Categories()
+                            Categories.Create(new Categories()
                             {
                                 Category_name = message.Text
                             });
@@ -297,7 +314,7 @@ namespace Telegram_Bot
                             break;
                         case 2:
                             string[] book = message.Text.Split(',');
-                            CrudForBook.Create(new Books()
+                            Books.Create(new Books()
                             {
                                 Name = book[0],
                                 Author = book[1],
@@ -310,7 +327,7 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
-                            CrudForOrderStatus.Create(new OrderStatus()
+                            OrderStatus.Create(new OrderStatus()
                             {
                                 korzinka_id = kr_id++
 
