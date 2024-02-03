@@ -20,10 +20,10 @@ namespace Telegram_Bot
             else
             {
                 return new List<T>();
-            }
+            } 
         }
         public static void Save(List<T> books,string path)
-        {
+        {m
             string json = JsonSerializer.Serialize(books);
             System.IO.File.WriteAllText(path, json);
         }
