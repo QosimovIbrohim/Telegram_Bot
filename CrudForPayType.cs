@@ -13,18 +13,18 @@ namespace Telegram_Bot
 
         public static void Create(PayType pay)
         {
-            List<PayType> categories = GetAllPayment();
+            List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
             if (categories.Any(c => c.Name == pay.Name))
             {
                 return;
             }
             categories.Add(pay);
-            SavePayments(categories);
+            DeserializeSerialize<PayType>.Save(categories, path);
         }
         public static string Read()
         {
             StringBuilder sb = new StringBuilder();
-            List<PayType> categories = GetAllPayment();
+            List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
             foreach (PayType c in categories)
             {
                 sb.Append($"Name: {c.Name}\n");
@@ -36,14 +36,15 @@ namespace Telegram_Bot
         {
             try
             {
-                List<PayType> categories = GetAllPayment();
+                List < PayType > categories = DeserializeSerialize<PayType>.GetAll(path);
                 if (categories != null)
                 {
                     int index = categories.FindIndex(name => name.Name == last_name);
                     if (index != -1)
                     {
                         categories[index].Name = new_name;
-                        SavePayments(categories);
+                        DeserializeSerialize<PayType>.Save(categories, path);
+
                     }
                 }
             }
@@ -54,39 +55,23 @@ namespace Telegram_Bot
         {
             try
             {
-                List<PayType> categories = GetAllPayment();
+                List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
                 var catToRemove = categories.Find(ct => ct.Name == del_name);
 
                 if (catToRemove != null)
                 {
                     categories.Remove(catToRemove);
-                    SavePayments(categories);
+                    DeserializeSerialize<PayType>.Save(categories path);
                 }
             }
             catch { }
         }
-        public static List<PayType> GetAllPayment()
-        {
-
-            if (System.IO.File.Exists(path))
-            {
-                string json = System.IO.File.ReadAllText(path);
-                return JsonSerializer.Deserialize<List<PayType>>(json) ?? new List<PayType>();
-            }
-            else
-            {
-                return new List<PayType>();
-            }
-        }
-        public static void SavePayments(List<PayType> categories)
-        {
-            string json = JsonSerializer.Serialize(categories);
-            System.IO.File.WriteAllText(path, json);
-        }
     }
     public class PayType
     {
-        public string Name;
+        public string cash { get; set; }
+        public string card { get; set; }
+        public string clice { get; set; }
     }
 }
 
