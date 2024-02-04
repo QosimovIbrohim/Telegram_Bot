@@ -16,6 +16,7 @@ namespace Telegram_Bot
         public string botToken { get; set; }
         public int isCodeTrue = 0;
         public int InfoStatus = 0;
+        public int InFoUpdate = 0;
         public int kr_id = 0;
 
         public BotHandler(string token)
@@ -326,7 +327,7 @@ namespace Telegram_Bot
 
 
                 }
-                else if(message.Text == "DELETE")
+                else if (message.Text == "DELETE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
                     {
@@ -360,9 +361,111 @@ namespace Telegram_Bot
                             cancellationToken: cancellationToken
                             );
                     }
+                    else if (message.Text == "UPDATE")
+                    {
+                        if (CRUD.GetStatusCode(chatId) == 1)
+                        {
+                            InFoUpdate = 1;
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Update kilish uchun name kiriting ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 2)
+                        {
+                            InFoUpdate = 2;
+
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "update last name, new name, new price,new author, new categorie name",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 3)
+                        {
+                            InFoUpdate = 3;
+
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "name, new status",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 4)
+                        {
+                            InFoUpdate = 4;
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "last name,new name ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                    }
                 if (message.Text != null)
                 {
 
+                        switch (InFoUpdate)
+                        {
+                            case 1:
+                                InFoUpdate = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                                {
+                                    return;
+                                }
+                                Categories.Update(message.Text);
+                                await botClient.SendTextMessageAsync(
+                                    chatId: chatId,
+                                    text: "Muvaffaqiyatli Update",
+                                    cancellationToken: cancellationToken);
+                                break;
+                            case 2:
+                                InFoUpdate = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                                {
+                                    return;
+                                }
+                                string[] book = message.Text.Split(',', ' ');
+                                Books.Update(book[0], book[1], book[2], book[3], book[4]);
+                               
+                                await botClient.SendTextMessageAsync(
+                                  chatId: chatId,
+                                  text: "Muvaffaqiyatli Update",
+                                  cancellationToken: cancellationToken);
+                                break;
+                            case 3:
+                                InFoUpdate = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                                {
+                                    return;
+                                }
+                                string order = message.Text.Split(',', ' ');
+                                OrderStatus.Update(order[0], order[1]);
+                               
+                                await botClient.SendTextMessageAsync(
+                                 chatId: chatId,
+                                 text: "Muvaffaqiyatli Update",
+                                 cancellationToken: cancellationToken);
+                                break;
+                            case 4:
+                                InFoUpdate = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                                {
+                                    return;
+                                }
+                                string paytypes = message.Text.Split(",", ' ');
+                                PayType.Update(paytypes[0], paytypes[1]);
+                                await botClient.SendTextMessageAsync(
+                                 chatId: chatId,
+                                 text: "Muvaffaqiyatli Update",
+                                 cancellationToken: cancellationToken);
+                                break;
+                            default:
+                                InFoUpdate = 0;
+                                break;
+                        }
+
+                    }
                     switch (InfoStatus)
                     {
                         case 1:
