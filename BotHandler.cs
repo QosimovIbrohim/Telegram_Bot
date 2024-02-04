@@ -19,9 +19,9 @@ namespace Telegram_Bot
         public int DeleteStatus = 0;
         public int showCategory = 0;
         public string bokname = "";
-        public List<Books> books;
-        public StringBuilder st;
+        public List<Books> BANKAI = new List<Books>();
         public bool isBookNamer = false;
+        public bool IsHulkTrash = true;
         public BotHandler(string token)
         {
             botToken = token;
@@ -54,7 +54,6 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-
             if (update.Message is not { } message)
                 return;
 
@@ -739,62 +738,62 @@ namespace Telegram_Bot
 
                     }
                 }
-                if (message.Text != null)
+                if (message.Text != null && IsHulkTrash == true)
                 {
                     int i = 0;
-                    foreach (var book in DeserializeSerialize<Books>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\Books.json"))
+                    List<Books>? s = DeserializeSerialize<Books>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\Books.json");
+                    string st = "";
+                    BANKAI.Clear();
+                    foreach (Books book in s)
                     {
                         if (message.Text.Contains(book.Category_name))
                         {
                             if (book != null)
                             {
-                                Console.WriteLine(book);
-
-
                                 if (Books.GetRead(book) != null)
                                 {
                                     try
                                     {
-                                        books.Add(book);
+                                        BANKAI.Add(book);
                                     }
                                     catch
                                     {
-
+                                        Console.WriteLine("EXCEPTION");
                                     }
-                                    st.Append($"{i + 1} " + Books.GetRead(book));
-                                }
-                                else
-                                {
-                                    Console.WriteLine("null");
+                                    st += $"{i + 1}  + {Books.GetRead(book)}";
                                 }
                                 i++;
                             }
-                            else
-                            {
-                                Console.WriteLine("null1");
-                            }
                         }
                     }
-                    Console.WriteLine(st);
-                    //await botClient.SendTextMessageAsync(
-                    //    chatId: chatId, 
-                    //    text: st.ToString(),
-                    //    cancellationToken: cancellationToken);
+                    if (st != "")
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: st.ToString(),
+                            cancellationToken: cancellationToken);
 
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Kerakli book id sini yuboring!",
+                            cancellationToken: cancellationToken);
+                        isBookNamer = true;
+                        IsHulkTrash = false;
+                        return;
+                    }
                     await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Kerakli book id sini yuboring!",
-                        cancellationToken: cancellationToken);
-                    isBookNamer = true;
+                            chatId: chatId,
+                            text: "Afsuski topilmadi!",
+                            cancellationToken: cancellationToken);
                     return;
                 }
                 if (isBookNamer == true)
                 {
-                    if (books.Count > Convert.ToInt16(message.Text) && 0 > Convert.ToInt16(message.Text))
+                    if (BANKAI.Count >= Convert.ToInt16(message.Text) && 1 <= Convert.ToInt16(message.Text))
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Books.GetRead(books[Convert.ToInt16(message.Text)]),
+                            text: Books.GetRead(BANKAI[Convert.ToInt16(message.Text)-1]).ToString(),
                             cancellationToken: cancellationToken);
                     }
                     else
@@ -803,6 +802,7 @@ namespace Telegram_Bot
                             chatId: chatId,
                             text: "Index out of range");
                     }
+                    IsHulkTrash = true;
                 }
 
             }
