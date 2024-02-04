@@ -16,6 +16,8 @@ namespace Telegram_Bot
         public string botToken { get; set; }
         public int isCodeTrue = 0;
         public int InfoStatus = 0;
+
+        public int DeleteStatus = 0;
         public int kr_id = 0;
 
         public BotHandler(string token)
@@ -326,43 +328,86 @@ namespace Telegram_Bot
 
 
                 }
-                else if(message.Text == "DELETE")
+                else if (message.Text == "DELETE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Categories.Read(),
+                            text: "Iltimos Delete bo'luvchi category nomini kiriting",
                             cancellationToken: cancellationToken
                             );
+                        DeleteStatus = 1;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 2)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Books.Read(),
+                            text: "Istimos delete bo'luvchi book ni kiriting",
                             cancellationToken: cancellationToken
                             );
+                        DeleteStatus = 2;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 3)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: OrderStatus.Read(),
+                            text: "Iltimos delete bo'luvchi OrderStatusni kiriting",
                             cancellationToken: cancellationToken
                             );
+                        DeleteStatus = 3;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 4)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: PayType.Read(),
+                            text: "Delete bo",
                             cancellationToken: cancellationToken
                             );
+                        DeleteStatus = 4;
+                    
                     }
+                    return;
+                }
                 if (message.Text != null)
                 {
-
+                    switch(DeleteStatus)
+                    {
+                        case 1:
+                            DeleteStatus = 0;
+                            Categories.Delete(message.Text);
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 2:
+                            DeleteStatus = 0;
+                            Books.Delete(message.Text);
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 3:
+                            DeleteStatus = 0;
+                            OrderStatus.Delete(message.Text);
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 4:
+                            DeleteStatus = 0;
+                            PayType.Delete(message.Text);
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        default:
+                            break;
+                    }
                     switch (InfoStatus)
                     {
                         case 1:
@@ -433,6 +478,12 @@ namespace Telegram_Bot
                         default:
                             InfoStatus = 0;
                             break;
+                    }
+
+                    switch(DeleteStatus)
+                    {
+                        case 1:
+
                     }
 
                 }

@@ -8,14 +8,13 @@ namespace Telegram_Bot
 {
     public class OrderStatus
     {
-        public int korzinka_id { get; set; }
         public string status { get; set; }
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\OrderSatus.json";
 
         public static void Create(OrderStatus ct)
         {
             List<OrderStatus> orders = DeserializeSerialize<OrderStatus>.GetAll(path);
-            if (orders.Any(c => c.korzinka_id == ct.korzinka_id))
+            if (orders.Any(c => c.status == ct.status))
             {
                 return;
             }
@@ -28,19 +27,19 @@ namespace Telegram_Bot
             List<OrderStatus> orders = DeserializeSerialize<OrderStatus>.GetAll(path);
             foreach (OrderStatus c in orders)
             {
-                sb.Append($"Korzinka_id: {c.korzinka_id}\nOrder Status: {c.status}");
+                sb.Append($"Order Status: {c.status}");
             }
             return sb.ToString();
         }
 
-        public static void Update(int id, string new_status)
+        public static void Update(string name, string new_status)
         {
             try
             {
                 List<OrderStatus> orders = DeserializeSerialize<OrderStatus>.GetAll(path);
                 if (orders != null)
                 {
-                    int index = orders.FindIndex(name => name.korzinka_id == id);
+                    int index = orders.FindIndex(ord => ord.status == name);
                     if (index != -1)
                     {
                         orders[index].status = new_status;
@@ -51,12 +50,12 @@ namespace Telegram_Bot
             catch { }
         }
 
-        public static void Delete(int id)
+        public static void Delete(string name)
         {
             try
             {
                 List<OrderStatus> orders = DeserializeSerialize<OrderStatus>.GetAll(path);
-                var catToRemove = orders.Find(ct => ct.korzinka_id == id);
+                var catToRemove = orders.Find(ct => ct.status == name);
 
                 if (catToRemove != null)
                 {
