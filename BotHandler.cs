@@ -236,10 +236,10 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        Admin.Create(new Admin()
-                        {
-                            chatId = messageAsLong
-                        });
+                    Admin.Create(new Admin()
+                    {
+                        chatId = messageAsLong
+                    });
                     Admin.Create(new Admin()
                     {
                         chatId = messageAsLong
@@ -298,7 +298,6 @@ namespace Telegram_Bot
                             text: Categories.Read(),
                             cancellationToken: cancellationToken
                             );
-                        InfoStatus = 1;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 2)
                     {
@@ -307,7 +306,6 @@ namespace Telegram_Bot
                             text: Books.Read(),
                             cancellationToken: cancellationToken
                             );
-                        InfoStatus = 2;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 3)
                     {
@@ -316,7 +314,6 @@ namespace Telegram_Bot
                             text: OrderStatus.Read(),
                             cancellationToken: cancellationToken
                             );
-                        InfoStatus = 3;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 4)
                     {
@@ -325,33 +322,8 @@ namespace Telegram_Bot
                             text: PayType.Read(),
                             cancellationToken: cancellationToken
                             );
-                        InfoStatus = 4;
                     }
-                    return;
-                }
-                else if (message.Text == "READ")
-                {
-                    if (CRUD.GetStatusCode(chatId) == 0)
-                    {
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: Categories.Read(),
-                            cancellationToken: cancellationToken);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 2)
-                    {
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: Books.Read(),
-                            cancellationToken: cancellationToken);
-                    }
-                    else if (CRUD.GetStatusCode(chatId) == 4)
-                    {
-                        await botClient.SendTextMessageAsync(
-                            chatId: chatId,
-                            text: OrderStatus.Read(),
-                            cancellationToken: cancellationToken);
-                    }
+
 
                 }
                 if (message.Text != null)
@@ -360,7 +332,7 @@ namespace Telegram_Bot
                     switch (InfoStatus)
                     {
                         case 1:
-                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
                             {
                                 return;
                             }
@@ -380,7 +352,7 @@ namespace Telegram_Bot
                                 return;
                             }
                             InfoStatus = 0;
-                            string[] book = message.Text.Split(',');
+                            string[] book = message.Text.Split(',', ' ');
                             Books.Create(new Books()
                             {
                                 Name = book[0],
