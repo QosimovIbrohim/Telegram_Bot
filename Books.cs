@@ -40,6 +40,15 @@ namespace Telegram_Bot
             return builder.ToString();
         }
 
+        public static string GetRead(Books c)
+        {
+           return       ($"Book name:{c.Name}\n" +
+                    $"Book Author: {c.Author}\n" +
+                    $"Book Category: {c.Category_name}\n" +
+                    $"Book price: {c.price}\n" + "\n📖----------------------📖" + "\n");
+            
+        }
+
         public static void Update(string last_name, string new_price, string new_name, string new_author, string new_category_name)
         {
             try

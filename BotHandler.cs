@@ -1,13 +1,12 @@
 ﻿using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot;
-using System.Reflection.Metadata;
 using Telegram.Bot.Types;
 using Telegram.Bot.Exceptions;
-using Newtonsoft.Json.Serialization;
 using TelegramBot;
+using System.Text;
 using Telegram.Bot.Types.ReplyMarkups;
-using System.ComponentModel;
+using OfficeOpenXml.Drawing.Slicer.Style;
 
 namespace Telegram_Bot
 {
@@ -18,8 +17,11 @@ namespace Telegram_Bot
         public int InfoStatus = 0;
         public int InFoUpdate = 0;
         public int DeleteStatus = 0;
-        public int kr_id = 0;
-
+        public int showCategory = 0;
+        public string bokname = "";
+        public List<Books> books;
+        public StringBuilder st;
+        public bool isBookNamer = false;
         public BotHandler(string token)
         {
             botToken = token;
@@ -52,7 +54,7 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-
+            
             if (update.Message is not { } message)
                 return;
 
@@ -682,7 +684,7 @@ namespace Telegram_Bot
                         break;
                     case 7:
                         FileMake.MijozRoyxatPdf(CRUD.ReadForPDF(), "C:\\Users\\user\\Desktop\\DatabseFolders\\");
-                         var stream2 = System.IO.File.OpenRead(@"C:\Users\user\Desktop\DatabseFolders\MijozlarRoyhati.pdf");
+                        var stream2 = System.IO.File.OpenRead(@"C:\Users\user\Desktop\DatabseFolders\MijozlarRoyhati.pdf");
                         Message message2 = await botClient.SendDocumentAsync(
                             chatId: chatId,
                             document: InputFile.FromStream(stream: stream2, fileName: "MijozlarRoyhati.pdf"),
@@ -698,10 +700,109 @@ namespace Telegram_Bot
 
             else
             {
+                Console.WriteLine("aaaaaaaaaa");
+                if (CRUD.GetStatusCode(chatId) == 0)
+                {
+                    try
+                    {
+
+                        List<List<KeyboardButton>> categories = new List<List<KeyboardButton>>();
+                        List<KeyboardButton> currentRow = new List<KeyboardButton>();
+
+                        foreach (var i in DeserializeSerialize<Categories>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\Categories.json"))
+                        {
+                            currentRow.Add(new KeyboardButton($"{i.Category_name}"));
+
+                            if (currentRow.Count >= 4)
+                            {
+                                categories.Add(new List<KeyboardButton>(currentRow));
+                                currentRow.Clear();
+                            }
+                        }
+
+                        if (currentRow.Count > 0)
+                        {
+                            categories.Add(new List<KeyboardButton>(currentRow));
+                        }
+
+
+                        ReplyKeyboardMarkup rep = new ReplyKeyboardMarkup(categories.Select(row => row.ToArray()).ToArray());
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Tanlang",
+                            replyMarkup: rep,
+                            cancellationToken: cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 1);
+                        return;
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (message.Text != null)
+                {
+                    int i = 0;
+                    foreach (var book in DeserializeSerialize<Books>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\Books.json"))
+                    {
+                        if (message.Text.Contains(book.Category_name))
+                        {
+                            if (book != null)
+                            {
+                                Console.WriteLine(book);
+                             
+                                    books.Add(book);
+                               
+                                if (Books.GetRead(book) != null)
+                                {
+                                    st.Append($"{i + 1} " + Books.GetRead(book));
+                                }
+                                else
+                                {
+                                    Console.WriteLine("null");
+                                }
+                                i++;
+                            }
+                            else 
+                            {
+                                Console.WriteLine("null1");
+                            }
+                        }
+                    }
+                    Console.WriteLine(st);
+                    //await botClient.SendTextMessageAsync(
+                    //    chatId: chatId, 
+                    //    text: st.ToString(),
+                    //    cancellationToken: cancellationToken);
+
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        text: "Kerakli book id sini yuboring!",
+                        cancellationToken: cancellationToken);
+                    isBookNamer = true;
+                    return;
+                }
+                if (isBookNamer == true)
+                {
+                    if (books.Count > Convert.ToInt16(message.Text) && 0 > Convert.ToInt16(message.Text))
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Books.GetRead(books[Convert.ToInt16(message.Text)]),
+                            cancellationToken: cancellationToken);
+                    }
+                    else
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Index out of range");
+                    }
+                }
 
             }
-            //use panel
         }
+        //use panel
+
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
