@@ -16,8 +16,7 @@ namespace Telegram_Bot
         public string botToken { get; set; }
         public int isCodeTrue = 0;
         public int InfoStatus = 0;
-
-        public int DeleteStatus = 0;
+        public int InFoUpdate = 0;
         public int kr_id = 0;
 
         public BotHandler(string token)
@@ -332,28 +331,25 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Iltimos Delete bo'luvchi category nomini kiriting",
+                            text: Categories.Read(),
                             cancellationToken: cancellationToken
                             );
-                        DeleteStatus = 1;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 2)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Istimos delete bo'luvchi book ni kiriting",
+                            text: Books.Read(),
                             cancellationToken: cancellationToken
                             );
-                        DeleteStatus = 2;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 3)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Iltimos delete bo'luvchi OrderStatusni kiriting",
+                            text: OrderStatus.Read(),
                             cancellationToken: cancellationToken
                             );
-                        DeleteStatus = 3;
                     }
                     else if (CRUD.GetStatusCode(chatId) == 4)
                     {
@@ -362,11 +358,48 @@ namespace Telegram_Bot
                             text: "Iltimos delete bo'luvchi Payment turini kiriting",
                             cancellationToken: cancellationToken
                             );
-                        DeleteStatus = 4;
-                    
                     }
-                    return;
-                }
+                    else if (message.Text == "UPDATE")
+                    {
+                        if (CRUD.GetStatusCode(chatId) == 1)
+                        {
+                            InFoUpdate = 1;
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Update kilish uchun name kiriting ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 2)
+                        {
+                            InFoUpdate = 2;
+
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "update last name, new name, new price,new author, new categorie name",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 3)
+                        {
+                            InFoUpdate = 3;
+
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "name, new status",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 4)
+                        {
+                            InFoUpdate = 4;
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "last name,new name ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                    }
                 if (message.Text != null)
                 {
                     switch(DeleteStatus)
@@ -494,6 +527,11 @@ namespace Telegram_Bot
                             break;
                     }
 
+                    switch(DeleteStatus)
+                    {
+                        case 1:
+
+                    }
 
                 }
                 switch (CRUD.GetStatusCode(chatId))
