@@ -49,12 +49,15 @@ namespace Telegram_Bot
 
             cts.Cancel();
         }
+
+
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             if (update.Message is not { } message)
                 return;
-            #region follow
+
             var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
+            #region Fllow check
             if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
             {
                 InlineKeyboardMarkup inlineKeyboard = new(new[]
@@ -161,7 +164,6 @@ namespace Telegram_Bot
             }
 
             // change qilinmasin
-            Console.WriteLine(chatId);
 
             if (Admin.isAdmin(chatId) == true)
             {
@@ -174,6 +176,10 @@ namespace Telegram_Bot
                 {
                     CRUD.ChangeStatusCode(chatId, 2);
                 }
+
+
+
+
                 else if (message.Text == "OrderStatus")
                 {
                     CRUD.ChangeStatusCode(chatId, 3);
@@ -235,16 +241,16 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        Admin.Create(new Admin()
-                        {
-                            chatId = messageAsLong
-                        });
+                    Admin.Create(new Admin()
+                    {
+                        chatId = messageAsLong
+                    });
                     await botClient.SendTextMessageAsync(chatId: chatId, text: "Succesfully added", cancellationToken: cancellationToken);
                 }
                 #region CREATE
                 else if (message.Text == "CREATE")
                 {
-                    if (CRUD.GetStatusCode(chatId) == 1)
+                    if (CRUD.GetStatusCode(chatId) == 31)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -284,7 +290,6 @@ namespace Telegram_Bot
                 }
                 #endregion
 
-                #region READ
                 else if (message.Text == "READ")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
@@ -296,7 +301,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 1;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    else if (CRUD.GetStatusCode(chatId) == 32)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -305,7 +310,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 2;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 3)
+                    else if (CRUD.GetStatusCode(chatId) == 33)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -314,7 +319,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 3;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    else if (CRUD.GetStatusCode(chatId) == 34)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -325,15 +330,38 @@ namespace Telegram_Bot
                     }
                     return;
                 }
-                #endregion
+                else if (message.Text == "READ")
+                {
+                    if (CRUD.GetStatusCode(chatId) == 0)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Categories.Read(),
+                            cancellationToken: cancellationToken);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Books.Read(),
+                            cancellationToken: cancellationToken);
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: OrderStatus.Read(),
+                            cancellationToken: cancellationToken);
+                    }
 
-
+                }
                 if (message.Text != null)
                 {
 
                     switch (InfoStatus)
                     {
                         case 1:
+                            InfoStatus = 0;
                             Categories.Create(new Categories()
                             {
                                 Category_name = message.Text
@@ -344,6 +372,7 @@ namespace Telegram_Bot
                                 cancellationToken: cancellationToken);
                             break;
                         case 2:
+                            InfoStatus = 0;
                             string[] book = message.Text.Split(',');
                             Books.Create(new Books()
                             {
@@ -358,6 +387,7 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
+                            InfoStatus = 0;
                             OrderStatus.Create(new OrderStatus()
                             {
                                 korzinka_id = kr_id++
@@ -369,6 +399,7 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         case 4:
+                            InfoStatus = 0;
                             PayType.Create(new PayType()
                             {
                                 cash = message.Text,
@@ -379,6 +410,7 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         default:
+                            InfoStatus = 0;
                             break;
                     }
 
@@ -410,21 +442,25 @@ namespace Telegram_Bot
 
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text:"Bosh menu",
+                            text: "Bosh menu",
                             replyMarkup: replyKeyboardMarkup,
                             cancellationToken: cancellationToken);
                         break;
                     case 1:
                         await CreateFunction(botClient, update, cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 31);
                         return;
                     case 2:
                         await CreateFunction(botClient, update, cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 32);
                         return;
                     case 3:
                         await CreateFunction(botClient, update, cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 33);
                         return;
                     case 4:
                         await CreateFunction(botClient, update, cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 34);
                         return;
                     default:
                         break;
@@ -470,11 +506,16 @@ namespace Telegram_Bot
             {
                 ResizeKeyboard = true
             };
-            await botClient.SendTextMessageAsync(
+            Message resp = await botClient.SendTextMessageAsync(
                 chatId: update.Message.Chat.Id,
                 text: update.Message.Text,
                 replyMarkup: replyKeyboardMarkup4,
                 cancellationToken: cancellationToken);
+           /* await botClient.DeleteMessageAsync(
+                chatId: update.Message.Chat.Id,
+                messageId: resp.MessageId,
+                cancellationToken: cancellationToken
+                );*/
         }
     }
 }
