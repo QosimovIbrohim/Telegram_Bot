@@ -156,7 +156,7 @@ namespace Telegram_Bot
                 };
                 await botClient.SendTextMessageAsync(
                      chatId: chatId,
-                     text: "Botdan to'liq foydalanish uchun telefon raqami    ngizni jo'nating!",
+                     text: "Botdan to'liq foydalanish uchun telefon raqamingizni jo'nating!",
                      replyMarkup: replyKeyboardMarkup,
                      cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
@@ -292,7 +292,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Categories.Read()   ,
+                            text: Categories.Read(),
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 1;
@@ -357,6 +357,10 @@ namespace Telegram_Bot
                     switch (InfoStatus)
                     {
                         case 1:
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                            {
+                                return;
+                            }
                             InfoStatus = 0;
                             Categories.Create(new Categories()
                             {
@@ -368,6 +372,10 @@ namespace Telegram_Bot
                                 cancellationToken: cancellationToken);
                             break;
                         case 2:
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                            {
+                                return;
+                            }
                             InfoStatus = 0;
                             string[] book = message.Text.Split(',');
                             Books.Create(new Books()
@@ -383,6 +391,10 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                            {
+                                return;
+                            }
                             InfoStatus = 0;
                             OrderStatus.Create(new OrderStatus()
                             {
@@ -395,6 +407,10 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         case 4:
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
+                            {
+                                return;
+                            }
                             InfoStatus = 0;
                             PayType.Create(new PayType()
                             {
@@ -503,11 +519,11 @@ namespace Telegram_Bot
                 text: update.Message.Text,
                 replyMarkup: replyKeyboardMarkup4,
                 cancellationToken: cancellationToken);
-           /* await botClient.DeleteMessageAsync(
-                chatId: update.Message.Chat.Id,
-                messageId: resp.MessageId,
-                cancellationToken: cancellationToken
-                );*/
+            /* await botClient.DeleteMessageAsync(
+                 chatId: update.Message.Chat.Id,
+                 messageId: resp.MessageId,
+                 cancellationToken: cancellationToken
+                 );*/
         }
     }
 }
