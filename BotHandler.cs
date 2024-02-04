@@ -50,8 +50,6 @@ namespace Telegram_Bot
 
             cts.Cancel();
         }
-
-
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             if (update.Message is not { } message)
@@ -361,7 +359,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Delete bo",
+                            text: "Iltimos delete bo'luvchi Payment turini kiriting",
                             cancellationToken: cancellationToken
                             );
                         DeleteStatus = 4;
