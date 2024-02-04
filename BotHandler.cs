@@ -326,6 +326,40 @@ namespace Telegram_Bot
 
 
                 }
+                else if(message.Text == "DELETE")
+                {
+                    if (CRUD.GetStatusCode(chatId) == 1)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Categories.Read(),
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: Books.Read(),
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 3)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: OrderStatus.Read(),
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: PayType.Read(),
+                            cancellationToken: cancellationToken
+                            );
+                    }
                 if (message.Text != null)
                 {
 
