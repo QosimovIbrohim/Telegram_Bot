@@ -51,8 +51,10 @@ namespace Telegram_Bot
                 {
                     admins.Remove(catToRemove);
                     DeserializeSerialize<Admin>.Save(admins, path);
+                    DeserializeSerialize<Admin>.Save(admins,path);
                 }
             }
             catch { }
         }
+    }
 }
