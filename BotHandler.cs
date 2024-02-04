@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.ComponentModel;
 
 namespace Telegram_Bot
-{hfajfja=
+{
     public class BotHandler
     {
         public string botToken { get; set; }
