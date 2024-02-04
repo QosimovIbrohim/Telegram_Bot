@@ -375,6 +375,10 @@ namespace Telegram_Bot
                     {
                         case 1:
                             DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
                             Categories.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
@@ -383,6 +387,10 @@ namespace Telegram_Bot
                             break;
                         case 2:
                             DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
                             Books.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
@@ -391,6 +399,10 @@ namespace Telegram_Bot
                             break;
                         case 3:
                             DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
                             OrderStatus.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
@@ -399,6 +411,10 @@ namespace Telegram_Bot
                             break;
                         case 4:
                             DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
                             PayType.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
@@ -406,16 +422,17 @@ namespace Telegram_Bot
                                 cancellationToken: cancellationToken);
                             break;
                         default:
+                            DeleteStatus = 0;
                             break;
                     }
                     switch (InfoStatus)
                     {
                         case 1:
+                            InfoStatus = 0;
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
                             {
                                 return;
                             }
-                            InfoStatus = 0;
                             Categories.Create(new Categories()
                             {
                                 Category_name = message.Text
@@ -426,11 +443,11 @@ namespace Telegram_Bot
                                 cancellationToken: cancellationToken);
                             break;
                         case 2:
+                            InfoStatus = 0;
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
                             }
-                            InfoStatus = 0;
                             string[] book = message.Text.Split(',', ' ');
                             Books.Create(new Books()
                             {
@@ -445,15 +462,14 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
+                            InfoStatus = 0;
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
                             }
-                            InfoStatus = 0;
                             OrderStatus.Create(new OrderStatus()
                             {
-                                korzinka_id = kr_id++
-
+                               status = message.Text
                             });
                             await botClient.SendTextMessageAsync(
                              chatId: chatId,
@@ -461,11 +477,11 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         case 4:
+                            InfoStatus = 0;
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
                             }
-                            InfoStatus = 0;
                             PayType.Create(new PayType()
                             {
                                 cash = message.Text,
@@ -480,11 +496,6 @@ namespace Telegram_Bot
                             break;
                     }
 
-                    switch(DeleteStatus)
-                    {
-                        case 1:
-
-                    }
 
                 }
                 switch (CRUD.GetStatusCode(chatId))
