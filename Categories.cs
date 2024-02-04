@@ -47,14 +47,14 @@ namespace Telegram_Bot
             }
         }
 
-        public static void Update(string new_name)
+        public static void Update(string last_name,string new_name)
         {
             try
             {
                 List<Categories> categories = DeserializeSerialize<Categories>.GetAll(path);
                 if (categories != null)
                 {
-                    int index = categories.FindIndex(name => name.Category_name == new_name);
+                    int index = categories.FindIndex(name => name.Category_name == last_name);
                     if (index != -1)
                     {
                         categories[index].Category_name = new_name;
