@@ -54,7 +54,7 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            
+
             if (update.Message is not { } message)
                 return;
 
@@ -700,7 +700,6 @@ namespace Telegram_Bot
 
             else
             {
-                Console.WriteLine("aaaaaaaaaa");
                 if (CRUD.GetStatusCode(chatId) == 0)
                 {
                     try
@@ -750,11 +749,18 @@ namespace Telegram_Bot
                             if (book != null)
                             {
                                 Console.WriteLine(book);
-                             
-                                    books.Add(book);
-                               
+
+
                                 if (Books.GetRead(book) != null)
                                 {
+                                    try
+                                    {
+                                        books.Add(book);
+                                    }
+                                    catch
+                                    {
+
+                                    }
                                     st.Append($"{i + 1} " + Books.GetRead(book));
                                 }
                                 else
@@ -763,7 +769,7 @@ namespace Telegram_Bot
                                 }
                                 i++;
                             }
-                            else 
+                            else
                             {
                                 Console.WriteLine("null1");
                             }
