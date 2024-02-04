@@ -35,7 +35,7 @@ namespace Telegram_Bot
                 builder.Append($"Book name:{c.Name}\n" +
                     $"Book Author: {c.Author}\n" +
                     $"Book Category: {c.Category_name}\n" +
-                    $"Book price: {c.price}\n"+"\n----------------------"+"\n");
+                    $"Book price: {c.price}\n"+ "\n📖----------------------📖" + "\n");
             }
             return builder.ToString();
         }
