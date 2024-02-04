@@ -290,7 +290,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Categories.Read()   ,
+                            text: Categories.Read(),
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 1;
@@ -299,7 +299,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Iltimos yangi book nomini,muallifini,narxini,category ini yuboring yuboring",
+                            text: Books.Read(),
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 2;
@@ -308,7 +308,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Iltimos yangi order statusini yuboring",
+                            text: OrderStatus.Read(),
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 3;
@@ -317,7 +317,7 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Iltimos yangi payment turini yuboring",
+                            text: PayType.Read(),
                             cancellationToken: cancellationToken
                             );
                         InfoStatus = 4;
