@@ -23,10 +23,7 @@ namespace Telegram_Bot
             {
                 return;
             }
-<<<<<<< HEAD:CrudForBook.cs
-=======
             books.Add(bk);
->>>>>>> 1236206a3c32bddf77e28d5295e9e1b2ed10ba48:Books.cs
             DeserializeSerialize<Books>.Save(books, path);
         }
         public static string Read()
@@ -54,12 +51,9 @@ namespace Telegram_Bot
                     if (index != -1)
                     {
                         books[index].Name = new_name;
-<<<<<<< HEAD:CrudForBook.cs
-=======
                         books[index].Author = new_author;
                         books[index].price = Convert.ToUInt16(new_price);
                         books[index].Category_name = new_category_name;
->>>>>>> 1236206a3c32bddf77e28d5295e9e1b2ed10ba48:Books.cs
                         DeserializeSerialize<Books>.Save(books, path);
                     }
                 }

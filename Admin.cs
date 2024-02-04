@@ -50,17 +50,11 @@ namespace Telegram_Bot
                 if (catToRemove != null)
                 {
                     admins.Remove(catToRemove);
-<<<<<<< HEAD:CRDForAdmin.cs
                     DeserializeSerialize<Admin>.Save(admins, path);
-=======
                     DeserializeSerialize<Admin>.Save(admins,path);
->>>>>>> 1236206a3c32bddf77e28d5295e9e1b2ed10ba48:Admin.cs
                 }
             }
             catch { }
         }
-<<<<<<< HEAD:CRDForAdmin.cs
-=======
     }
->>>>>>> 1236206a3c32bddf77e28d5295e9e1b2ed10ba48:Admin.cs
 }

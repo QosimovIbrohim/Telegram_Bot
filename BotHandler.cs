@@ -169,9 +169,6 @@ namespace Telegram_Bot
             {
 
                 if (message.Text == "Category")
-
-
-
                 {
                     CRUD.ChangeStatusCode(chatId, 1);
                 }
@@ -179,10 +176,6 @@ namespace Telegram_Bot
                 {
                     CRUD.ChangeStatusCode(chatId, 2);
                 }
-
-
-
-
                 else if (message.Text == "OrderStatus")
                 {
                     CRUD.ChangeStatusCode(chatId, 3);
@@ -253,7 +246,7 @@ namespace Telegram_Bot
                 #region CREATE
                 else if (message.Text == "CREATE")
                 {
-                    if (CRUD.GetStatusCode(chatId) == 31)
+                    if (CRUD.GetStatusCode(chatId) == 1)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -304,7 +297,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 1;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 32)
+                    else if (CRUD.GetStatusCode(chatId) == 2)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -313,7 +306,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 2;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 33)
+                    else if (CRUD.GetStatusCode(chatId) == 3)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -322,7 +315,7 @@ namespace Telegram_Bot
                             );
                         InfoStatus = 3;
                     }
-                    else if (CRUD.GetStatusCode(chatId) == 34)
+                    else if (CRUD.GetStatusCode(chatId) == 4)
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
@@ -451,19 +444,15 @@ namespace Telegram_Bot
                         break;
                     case 1:
                         await CreateFunction(botClient, update, cancellationToken);
-                        CRUD.ChangeStatusCode(chatId, 31);
                         return;
                     case 2:
                         await CreateFunction(botClient, update, cancellationToken);
-                        CRUD.ChangeStatusCode(chatId, 32);
                         return;
                     case 3:
                         await CreateFunction(botClient, update, cancellationToken);
-                        CRUD.ChangeStatusCode(chatId, 33);
                         return;
                     case 4:
                         await CreateFunction(botClient, update, cancellationToken);
-                        CRUD.ChangeStatusCode(chatId, 34);
                         return;
                     default:
                         break;
