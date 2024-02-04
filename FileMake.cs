@@ -8,8 +8,9 @@ namespace Telegram_Bot
 {
     public class FileMake
     {
-        public void MijozRoyxatPdf(string text, string pdfsFolder) 
+        public static void MijozRoyxatPdf(string text, string pdfsFolder) 
         {
+            QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(container =>
             {
                 container.Page(page =>
@@ -27,7 +28,7 @@ namespace Telegram_Bot
                       .PaddingVertical(1, Unit.Centimetre)
                       .Column(x =>
                       {
-                          x.Spacing(20);
+                          x.Spacing(10);
 
                           x.Item().Text($"{text}");
                       });
@@ -45,7 +46,7 @@ namespace Telegram_Bot
 
 
         }
-        public void HaridRoyxatPdf(string text, string pdfsFolder)
+        public static void HaridRoyxatPdf(string text, string pdfsFolder)
         {
             Document.Create(container =>
             {
@@ -78,7 +79,7 @@ namespace Telegram_Bot
                       });
                 });
             })
-           .GeneratePdf(Path.Combine(pdfsFolder, "MijozlarRoyhati.pdf"));
+           .GeneratePdf(Path.Combine(pdfsFolder, "HaridRoyhati.pdf"));
 
 
         }

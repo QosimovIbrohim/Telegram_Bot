@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramBot
@@ -32,6 +33,17 @@ namespace TelegramBot
             {
                 return $"{chat.chatID}:{chat.phoneNumber}";
             }
+        }
+
+        public static string ReadForPDF()
+        {
+            StringBuilder sb = new StringBuilder();
+            List<BotUser> chats = GetAllChats();
+            foreach (BotUser chat in chats)
+            {
+                sb.Append($"{chat.chatID} => {chat.phoneNumber}\n-------------------\n");
+            }
+            return sb.ToString();
         }
         public static bool IsPhoneNumberNull(long chatId)
         {

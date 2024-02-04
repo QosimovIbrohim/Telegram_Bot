@@ -52,6 +52,7 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+
             if (update.Message is not { } message)
                 return;
 
@@ -326,83 +327,7 @@ namespace Telegram_Bot
 
 
                 }
-            }
-            else if (message.Text == "UPDATE")
-            {
-                if (CRUD.GetStatusCode(chatId) == 1)
-                {
-                    InFoUpdate = 1;
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Update qilish uchun eski name, yangi name kiriting ",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 2)
-                {
-                    InFoUpdate = 2;
 
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Update last name, new name, new price,new author, new categorie name",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 3)
-                {
-                    InFoUpdate = 3;
-
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Update qilish uchun name, new status ni kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 4)
-                {
-                    InFoUpdate = 4;
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Update qilish uchun last name,new name ni kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
-            }
-
-            else if (message.Text == "DELETE")
-            {
-                if (CRUD.GetStatusCode(chatId) == 1)
-                {
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Iltimos delete bo'luvchi Category turini kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 2)
-                {
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Iltimos delete bo'luvchi Book nomini kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 3)
-                {
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Iltimos delete bo'luvchi order statusini kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
-                else if (CRUD.GetStatusCode(chatId) == 4)
-                {
-                    await botClient.SendTextMessageAsync(
-                        chatId: chatId,
-                        text: "Iltimos delete bo'luvchi Payment turini kiriting",
-                        cancellationToken: cancellationToken
-                        );
-                }
                 else if (message.Text == "UPDATE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
@@ -410,7 +335,7 @@ namespace Telegram_Bot
                         InFoUpdate = 1;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "Update kilish uchun name kiriting ",
+                            text: "Update qilish uchun eski name, yangi name kiriting ",
                             cancellationToken: cancellationToken
                             );
                     }
@@ -420,7 +345,7 @@ namespace Telegram_Bot
 
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "update last name, new name, new price,new author, new categorie name",
+                            text: "Update last name, new name, new price,new author, new categorie name",
                             cancellationToken: cancellationToken
                             );
                     }
@@ -430,7 +355,7 @@ namespace Telegram_Bot
 
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "name, new status",
+                            text: "Update qilish uchun name, new status ni kiriting",
                             cancellationToken: cancellationToken
                             );
                     }
@@ -439,66 +364,143 @@ namespace Telegram_Bot
                         InFoUpdate = 4;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: "last name,new name ",
+                            text: "Update qilish uchun last name,new name ni kiriting",
                             cancellationToken: cancellationToken
                             );
                     }
                 }
-                if (message.Text != null)
+
+                else if (message.Text == "DELETE")
                 {
-                    switch (DeleteStatus)
+                    if (CRUD.GetStatusCode(chatId) == 1)
                     {
-                        case 1:
-                            DeleteStatus = 0;
-                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                            {
-                                return;
-                            }
-                            Categories.Delete(message.Text);
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos delete bo'luvchi Category turini kiriting",
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 2)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos delete bo'luvchi Book nomini kiriting",
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 3)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos delete bo'luvchi order statusini kiriting",
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (CRUD.GetStatusCode(chatId) == 4)
+                    {
+                        await botClient.SendTextMessageAsync(
+                            chatId: chatId,
+                            text: "Iltimos delete bo'luvchi Payment turini kiriting",
+                            cancellationToken: cancellationToken
+                            );
+                    }
+                    else if (message.Text == "UPDATE")
+                    {
+                        if (CRUD.GetStatusCode(chatId) == 1)
+                        {
+                            InFoUpdate = 1;
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "Muvaffaqiyatli o'chirildi",
-                                cancellationToken: cancellationToken);
-                            break;
-                        case 2:
-                            DeleteStatus = 0;
-                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                            {
-                                return;
-                            }
-                            Books.Delete(message.Text);
+                                text: "Update kilish uchun name kiriting ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 2)
+                        {
+                            InFoUpdate = 2;
+
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "Muvaffaqiyatli o'chirildi",
-                                cancellationToken: cancellationToken);
-                            break;
-                        case 3:
-                            DeleteStatus = 0;
-                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                            {
-                                return;
-                            }
-                            OrderStatus.Delete(message.Text);
+                                text: "update last name, new name, new price,new author, new categorie name",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 3)
+                        {
+                            InFoUpdate = 3;
+
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "Muvaffaqiyatli o'chirildi",
-                                cancellationToken: cancellationToken);
-                            break;
-                        case 4:
-                            DeleteStatus = 0;
-                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                            {
-                                return;
-                            }
-                            PayType.Delete(message.Text);
+                                text: "name, new status",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                        else if (CRUD.GetStatusCode(chatId) == 4)
+                        {
+                            InFoUpdate = 4;
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "Muvaffaqiyatli o'chirildi",
-                                cancellationToken: cancellationToken);
-                            break;
-                        default:
-                            DeleteStatus = 0;
-                            break;
+                                text: "last name,new name ",
+                                cancellationToken: cancellationToken
+                                );
+                        }
+                    }
+                    if (message.Text != null)
+                    {
+                        switch (DeleteStatus)
+                        {
+                            case 1:
+                                DeleteStatus = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                                {
+                                    return;
+                                }
+                                Categories.Delete(message.Text);
+                                await botClient.SendTextMessageAsync(
+                                    chatId: chatId,
+                                    text: "Muvaffaqiyatli o'chirildi",
+                                    cancellationToken: cancellationToken);
+                                break;
+                            case 2:
+                                DeleteStatus = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                                {
+                                    return;
+                                }
+                                Books.Delete(message.Text);
+                                await botClient.SendTextMessageAsync(
+                                    chatId: chatId,
+                                    text: "Muvaffaqiyatli o'chirildi",
+                                    cancellationToken: cancellationToken);
+                                break;
+                            case 3:
+                                DeleteStatus = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                                {
+                                    return;
+                                }
+                                OrderStatus.Delete(message.Text);
+                                await botClient.SendTextMessageAsync(
+                                    chatId: chatId,
+                                    text: "Muvaffaqiyatli o'chirildi",
+                                    cancellationToken: cancellationToken);
+                                break;
+                            case 4:
+                                DeleteStatus = 0;
+                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                                {
+                                    return;
+                                }
+                                PayType.Delete(message.Text);
+                                await botClient.SendTextMessageAsync(
+                                    chatId: chatId,
+                                    text: "Muvaffaqiyatli o'chirildi",
+                                    cancellationToken: cancellationToken);
+                                break;
+                            default:
+                                DeleteStatus = 0;
+                                break;
+                        }
                     }
                     switch (InfoStatus)
                     {
@@ -674,19 +676,32 @@ namespace Telegram_Bot
                     case 4:
                         await CreateFunction(botClient, update, cancellationToken);
                         return;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        FileMake.MijozRoyxatPdf(CRUD.ReadForPDF(), "C:\\Users\\user\\Desktop\\DatabseFolders\\");
+                         var stream2 = System.IO.File.OpenRead(@"C:\Users\user\Desktop\DatabseFolders\MijozlarRoyhati.pdf");
+                        Message message2 = await botClient.SendDocumentAsync(
+                            chatId: chatId,
+                            document: InputFile.FromStream(stream: stream2, fileName: "MijozlarRoyhati.pdf"),
+                            caption: "Mijozlar Ro'yhati");
+                        break;
                     default:
                         break;
-
-
-
-
                 }
 
+
             }
+            //admin panel tugadi
+
+            else
+            {
+
+            }
+            //use panel
         }
-
-
-
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
@@ -724,11 +739,7 @@ namespace Telegram_Bot
                 text: update.Message.Text,
                 replyMarkup: replyKeyboardMarkup4,
                 cancellationToken: cancellationToken);
-            /* await botClient.DeleteMessageAsync(
-                 chatId: update.Message.Chat.Id,
-                 messageId: resp.MessageId,
-                 cancellationToken: cancellationToken
-                 );*/
+
         }
     }
 
