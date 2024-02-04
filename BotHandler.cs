@@ -8,10 +8,9 @@ using Newtonsoft.Json.Serialization;
 using TelegramBot;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.ComponentModel;
-using Telegram_Bot;
 
 namespace Telegram_Bot
-{
+{hfajfja=
     public class BotHandler
     {
         public string botToken { get; set; }
@@ -76,7 +75,7 @@ namespace Telegram_Bot
 
             long chatId = message.Chat.Id;
 
-            CRUD.Create(new BotUser()
+            CRUD.Create(new TelegramBot.BotUsers()
             {
                 chatID = chatId,
                 status = 0,
@@ -163,7 +162,7 @@ namespace Telegram_Bot
             // change qilinmasin
             Console.WriteLine(chatId);
 
-            if (Admin.isAdmin(chatId) == true)
+            if (CRDForAdmin.isAdmin(chatId) == true)
             {
 
                 if (message.Text == "Category")
@@ -235,7 +234,7 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        Admin.Create(new Admin()
+                        CRDForAdmin.Create(new Admin()
                         {
                             chatId = messageAsLong
                         });
@@ -334,7 +333,7 @@ namespace Telegram_Bot
                     switch (InfoStatus)
                     {
                         case 1:
-                            Categories.Create(new Categories()
+                            CrudForCategory.Create(new CrudForCategory.Categories()
                             {
                                 Category_name = message.Text
                             });
@@ -345,7 +344,7 @@ namespace Telegram_Bot
                             break;
                         case 2:
                             string[] book = message.Text.Split(',');
-                            Books.Create(new Books()
+                            CrudForBook.Create(new Books()
                             {
                                 Name = book[0],
                                 Author = book[1],
@@ -358,7 +357,7 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
-                            OrderStatus.Create(new OrderStatus()
+                            CrudForOrderStatus.Create(new OrderStatus()
                             {
                                 korzinka_id = kr_id++
 
@@ -369,9 +368,9 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         case 4:
-                            PayType.Create(new PayType()
+                            CrudForPayType.Create(new PayType()
                             {
-                                cash = message.Text,
+                                Name = message.Text,
                             });
                             await botClient.SendTextMessageAsync(
                              chatId: chatId,
