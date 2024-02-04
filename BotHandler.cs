@@ -169,6 +169,9 @@ namespace Telegram_Bot
             {
 
                 if (message.Text == "Category")
+
+
+
                 {
                     CRUD.ChangeStatusCode(chatId, 1);
                 }
