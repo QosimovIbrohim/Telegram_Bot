@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.ComponentModel;
 
 namespace Telegram_Bot
-{hfajfja=
+{
     public class BotHandler
     {
         public string botToken { get; set; }
@@ -78,7 +78,7 @@ namespace Telegram_Bot
 
             long chatId = message.Chat.Id;
 
-            CRUD.Create(new TelegramBot.BotUsers()
+            CRUD.Create(new BotUser()
             {
                 chatID = chatId,
                 status = 0,
@@ -164,7 +164,7 @@ namespace Telegram_Bot
 
             // change qilinmasin
 
-            if (CRDForAdmin.isAdmin(chatId) == true)
+            if (Admin.isAdmin(chatId) == true)
             {
 
                 if (message.Text == "Category")
@@ -236,7 +236,7 @@ namespace Telegram_Bot
                 long messageAsLong;
                 if (long.TryParse(message.Text, out messageAsLong))
                 {
-                        CRDForAdmin.Create(new Admin()
+                        Admin.Create(new Admin()
                         {
                             chatId = messageAsLong
                         });
@@ -360,7 +360,6 @@ namespace Telegram_Bot
                     switch (InfoStatus)
                     {
                         case 1:
-                            CrudForCategory.Create(new CrudForCategory.Categories()
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
@@ -382,7 +381,7 @@ namespace Telegram_Bot
                             }
                             InfoStatus = 0;
                             string[] book = message.Text.Split(',');
-                            CrudForBook.Create(new Books()
+                            Books.Create(new Books()
                             {
                                 Name = book[0],
                                 Author = book[1],
@@ -395,7 +394,6 @@ namespace Telegram_Bot
                               cancellationToken: cancellationToken);
                             break;
                         case 3:
-                            CrudForOrderStatus.Create(new OrderStatus()
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
@@ -412,7 +410,6 @@ namespace Telegram_Bot
                              cancellationToken: cancellationToken);
                             break;
                         case 4:
-                            CrudForPayType.Create(new PayType()
                             if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE")
                             {
                                 return;
@@ -420,7 +417,7 @@ namespace Telegram_Bot
                             InfoStatus = 0;
                             PayType.Create(new PayType()
                             {
-                                Name = message.Text,
+                                cash = message.Text,
                             });
                             await botClient.SendTextMessageAsync(
                              chatId: chatId,
