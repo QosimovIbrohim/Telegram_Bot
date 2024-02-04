@@ -23,6 +23,7 @@ namespace Telegram_Bot
             {
                 return;
             }
+            books.Add(bk);
             DeserializeSerialize<Books>.Save(books, path);
         }
         public static string Read()
@@ -33,8 +34,8 @@ namespace Telegram_Bot
             {
                 builder.Append($"Book name:{c.Name}\n" +
                     $"Book Author: {c.Author}\n" +
-                    $"Book Category{c.Category_name}\n" +
-                    $"Book price {c.price}\n");
+                    $"Book Category: {c.Category_name}\n" +
+                    $"Book price: {c.price}\n"+ "\n📖----------------------📖" + "\n");
             }
             return builder.ToString();
         }
@@ -50,6 +51,9 @@ namespace Telegram_Bot
                     if (index != -1)
                     {
                         books[index].Name = new_name;
+                        books[index].Author = new_author;
+                        books[index].price = Convert.ToUInt16(new_price);
+                        books[index].Category_name = new_category_name;
                         DeserializeSerialize<Books>.Save(books, path);
                     }
                 }
