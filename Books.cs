@@ -49,7 +49,7 @@ namespace Telegram_Bot
             
         }
 
-        public static void Update(string last_name, string new_price, string new_name, string new_author, string new_category_name)
+        public static void Update(string last_name, string new_name, string new_author, string new_price, string new_category_name)
         {
             try
             {
