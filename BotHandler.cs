@@ -59,7 +59,6 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-      
             if (update.Message is not { } message)
                 return;
             #region Fllow check
@@ -113,7 +112,7 @@ namespace Telegram_Bot
                         text: "Qabul qilindi!",
                         cancellationToken: cancellationToken);
             }
-     
+
             if (message.Contact != null)
             {
                 CRUD.Update(chatId, message.Contact.PhoneNumber.ToString());
@@ -387,12 +386,14 @@ namespace Telegram_Bot
                             cancellationToken: cancellationToken
                             );
                     }
+                    return;
                 }
 
                 else if (message.Text == "DELETE")
                 {
                     if (CRUD.GetStatusCode(chatId) == 1)
                     {
+                        DeleteStatus = 1;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: "Iltimos delete bo'luvchi Category turini kiriting",
@@ -401,6 +402,7 @@ namespace Telegram_Bot
                     }
                     else if (CRUD.GetStatusCode(chatId) == 2)
                     {
+                        DeleteStatus = 2;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: "Iltimos delete bo'luvchi Book nomini kiriting",
@@ -409,6 +411,7 @@ namespace Telegram_Bot
                     }
                     else if (CRUD.GetStatusCode(chatId) == 3)
                     {
+                        DeleteStatus = 3;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: "Iltimos delete bo'luvchi order statusini kiriting",
@@ -417,110 +420,72 @@ namespace Telegram_Bot
                     }
                     else if (CRUD.GetStatusCode(chatId) == 4)
                     {
+                        DeleteStatus = 4;
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: "Iltimos delete bo'luvchi Payment turini kiriting",
                             cancellationToken: cancellationToken
                             );
                     }
-                    else if (message.Text == "UPDATE")
+                    return;
+                }
+                if (message.Text != null)
+                {
+                    switch (DeleteStatus)
                     {
-                        if (CRUD.GetStatusCode(chatId) == 1)
-                        {
-                            InFoUpdate = 1;
+                        case 1:
+                            DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
+                            Categories.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "Update kilish uchun name kiriting ",
-                                cancellationToken: cancellationToken
-                                );
-                        }
-                        else if (CRUD.GetStatusCode(chatId) == 2)
-                        {
-                            InFoUpdate = 2;
-
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 2:
+                            DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
+                            Books.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "update last name, new name, new price,new author, new categorie name",
-                                cancellationToken: cancellationToken
-                                );
-                        }
-                        else if (CRUD.GetStatusCode(chatId) == 3)
-                        {
-                            InFoUpdate = 3;
-
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 3:
+                            DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
+                            OrderStatus.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "name, new status",
-                                cancellationToken: cancellationToken
-                                );
-                        }
-                        else if (CRUD.GetStatusCode(chatId) == 4)
-                        {
-                            InFoUpdate = 4;
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        case 4:
+                            DeleteStatus = 0;
+                            if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
+                            {
+                                return;
+                            }
+                            PayType.Delete(message.Text);
                             await botClient.SendTextMessageAsync(
                                 chatId: chatId,
-                                text: "last name,new name ",
-                                cancellationToken: cancellationToken
-                                );
-                        }
+                                text: "Muvaffaqiyatli o'chirildi",
+                                cancellationToken: cancellationToken);
+                            break;
+                        default:
+                            DeleteStatus = 0;
+                            break;
                     }
-                    if (message.Text != null)
-                    {
-                        switch (DeleteStatus)
-                        {
-                            case 1:
-                                DeleteStatus = 0;
-                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                                {
-                                    return;
-                                }
-                                Categories.Delete(message.Text);
-                                await botClient.SendTextMessageAsync(
-                                    chatId: chatId,
-                                    text: "Muvaffaqiyatli o'chirildi",
-                                    cancellationToken: cancellationToken);
-                                break;
-                            case 2:
-                                DeleteStatus = 0;
-                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                                {
-                                    return;
-                                }
-                                Books.Delete(message.Text);
-                                await botClient.SendTextMessageAsync(
-                                    chatId: chatId,
-                                    text: "Muvaffaqiyatli o'chirildi",
-                                    cancellationToken: cancellationToken);
-                                break;
-                            case 3:
-                                DeleteStatus = 0;
-                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                                {
-                                    return;
-                                }
-                                OrderStatus.Delete(message.Text);
-                                await botClient.SendTextMessageAsync(
-                                    chatId: chatId,
-                                    text: "Muvaffaqiyatli o'chirildi",
-                                    cancellationToken: cancellationToken);
-                                break;
-                            case 4:
-                                DeleteStatus = 0;
-                                if (message.Text == "BOOK" || message.Text == "READ" || message.Text == "CREATE" || message.Text == "UPDATE" || message.Text == "DELETE" || message.Text == "Back")
-                                {
-                                    return;
-                                }
-                                PayType.Delete(message.Text);
-                                await botClient.SendTextMessageAsync(
-                                    chatId: chatId,
-                                    text: "Muvaffaqiyatli o'chirildi",
-                                    cancellationToken: cancellationToken);
-                                break;
-                            default:
-                                DeleteStatus = 0;
-                                break;
-                        }
-                    }
+
                     switch (InfoStatus)
                     {
                         case 1:
@@ -544,7 +509,7 @@ namespace Telegram_Bot
                             {
                                 return;
                             }
-                            string[] book = message.Text.Split(',', ' ');
+                            string[] book = message.Text.Split(',');
                             Books.Create(new Books()
                             {
                                 Name = book[0],
@@ -586,7 +551,7 @@ namespace Telegram_Bot
                              chatId: chatId,
                              text: "Muvaffaqiyatli yaratildi",
                              cancellationToken: cancellationToken);
-                            break;
+                            return;
                         default:
                             InfoStatus = 0;
                             break;
