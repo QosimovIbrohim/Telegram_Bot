@@ -10,8 +10,6 @@ namespace Telegram_Bot
     public class PayType
     {
         public string cash { get; set; }
-        public string card { get; set; }
-        public string clice { get; set; }
 
         public static string path = @"C:\Users\user\Desktop\DatabseFolders\PayTypes.json";
 
@@ -27,13 +25,13 @@ namespace Telegram_Bot
         }
         public static string Read()
         {
-            StringBuilder sb = new StringBuilder();
+            string str = "";
             List<PayType> categories = DeserializeSerialize<PayType>.GetAll(path);
             foreach (PayType c in categories)
             {
-                sb.Append($"Name: {c.cash}\n");
+                str += $"Name: {c.cash}\n";
             }
-            return sb.ToString();
+            return str;
         }
 
         public static void Update(string last_name, string new_name)

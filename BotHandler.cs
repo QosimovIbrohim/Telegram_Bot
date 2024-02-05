@@ -7,6 +7,8 @@ using TelegramBot;
 using System.Text;
 using Telegram.Bot.Types.ReplyMarkups;
 using OfficeOpenXml.Drawing.Slicer.Style;
+using System.Net.Security;
+using System;
 
 namespace Telegram_Bot
 {
@@ -21,7 +23,10 @@ namespace Telegram_Bot
         public string bokname = "";
         public List<Books> BANKAI = new List<Books>();
         public bool isBookNamer = false;
+        public bool paymnt = false;
         public bool IsHulkTrash = true;
+        public bool isSelectedPayment = false;
+        public bool isLocation = false;
         public BotHandler(string token)
         {
             botToken = token;
@@ -54,11 +59,11 @@ namespace Telegram_Bot
         }
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+      
             if (update.Message is not { } message)
                 return;
-
-            var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
             #region Fllow check
+            var getchatmember = await botClient.GetChatMemberAsync("@Abduvahobov09", update.Message.From.Id);
             if (getchatmember.Status.ToString() == "Left" || getchatmember.Status.ToString() == null || getchatmember.Status.ToString() == "null" || getchatmember.Status.ToString() == "")
             {
                 InlineKeyboardMarkup inlineKeyboard = new(new[]
@@ -80,13 +85,18 @@ namespace Telegram_Bot
 
             long chatId = message.Chat.Id;
 
+
+            #region Create User
             CRUD.Create(new BotUser()
             {
                 chatID = chatId,
                 status = 0,
                 phoneNumber = ""
             });
+            #endregion
 
+
+            #region messeg check
             if (isCodeTrue == 1)
             {
                 if (message.Text != "get_code")
@@ -103,6 +113,7 @@ namespace Telegram_Bot
                         text: "Qabul qilindi!",
                         cancellationToken: cancellationToken);
             }
+     
             if (message.Contact != null)
             {
                 CRUD.Update(chatId, message.Contact.PhoneNumber.ToString());
@@ -115,8 +126,10 @@ namespace Telegram_Bot
                 return;
             }
 
+            #endregion
 
 
+            #region start
             if (message.Text == "/start")
             {
                 if (CRUD.IsPhoneNumberNull(chatId) == false)
@@ -143,8 +156,12 @@ namespace Telegram_Bot
                      cancellationToken: cancellationToken);
                 CRUD.ChangeStatusCode(chatId, 0);
             }
+            #endregion
 
 
+
+
+            #region Contact check 
             if (CRUD.IsPhoneNumberNull(chatId) == false)
             {
 
@@ -163,6 +180,7 @@ namespace Telegram_Bot
                 CRUD.ChangeStatusCode(chatId, 0);
                 return;
             }
+            #endregion
 
             // change qilinmasin
 
@@ -741,6 +759,7 @@ namespace Telegram_Bot
                 if (message.Text != null && IsHulkTrash == true)
                 {
                     int i = 0;
+
                     List<Books>? s = DeserializeSerialize<Books>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\Books.json");
                     string st = "";
                     BANKAI.Clear();
@@ -760,7 +779,7 @@ namespace Telegram_Bot
                                     {
                                         Console.WriteLine("EXCEPTION");
                                     }
-                                    st += $"{i + 1}  + {Books.GetRead(book)}";
+                                    st += $"{i + 1}.{Books.GetRead(book)}";
                                 }
                                 i++;
                             }
@@ -771,6 +790,7 @@ namespace Telegram_Bot
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: st.ToString(),
+                            replyMarkup: new ReplyKeyboardRemove(),
                             cancellationToken: cancellationToken);
 
                         await botClient.SendTextMessageAsync(
@@ -784,6 +804,7 @@ namespace Telegram_Bot
                     await botClient.SendTextMessageAsync(
                             chatId: chatId,
                             text: "Afsuski topilmadi!",
+                            replyMarkup: new ReplyKeyboardRemove(),
                             cancellationToken: cancellationToken);
                     return;
                 }
@@ -793,8 +814,10 @@ namespace Telegram_Bot
                     {
                         await botClient.SendTextMessageAsync(
                             chatId: chatId,
-                            text: Books.GetRead(BANKAI[Convert.ToInt16(message.Text)-1]).ToString(),
+                            text: Books.GetRead(BANKAI[Convert.ToInt16(message.Text) - 1]).ToString(),
                             cancellationToken: cancellationToken);
+                        paymnt = true;
+
                     }
                     else
                     {
@@ -803,6 +826,84 @@ namespace Telegram_Bot
                             text: "Index out of range");
                     }
                     IsHulkTrash = true;
+                }
+                if (paymnt == true)
+                {
+                    List<List<KeyboardButton>> paymnts = new List<List<KeyboardButton>>();
+                    List<KeyboardButton> paymntRow = new List<KeyboardButton>();
+
+                    foreach (var i in DeserializeSerialize<PayType>.GetAll(@"C:\Users\user\Desktop\DatabseFolders\PayTypes.json"))
+                    {
+                        paymntRow.Add(new KeyboardButton($"{i.cash}"));
+
+                        if (paymntRow.Count >= 4)
+                        {
+                            paymnts.Add(new List<KeyboardButton>(paymntRow));
+                            paymntRow.Clear();
+                        }
+                    }
+
+                    if (paymntRow.Count > 0)
+                    {
+                        paymnts.Add(new List<KeyboardButton>(paymntRow));
+                    }
+
+
+                    ReplyKeyboardMarkup rep = new ReplyKeyboardMarkup(paymnts.Select(row => row.ToArray()).ToArray());
+                    paymnt = false;
+                    isSelectedPayment = true;
+                    await botClient.SendTextMessageAsync(
+                        chatId: chatId,
+                        replyMarkup: rep,
+                        text: "To'lov turini tanlang!");
+                    return;
+                }
+                if (isSelectedPayment == true)
+                {
+                    if (message.Text != null)
+                    {
+                        if (message.Text.Contains("Naqd"))
+                        {
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "Lacatisiya taylabering!",
+                                cancellationToken: cancellationToken
+                              );
+                            isLocation = true;
+                            isSelectedPayment = false;
+                            return;
+                        }
+                        else
+                        {
+                            await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: "8600999908807777 ushbu karta raqamiga to'lov qiling va kuryerga screenshotni ko'ratasiz",
+                                cancellationToken: cancellationToken
+                              );
+                        }
+                    }
+                }
+                if (isLocation == true)
+                {
+                    if (message.Location != null)
+                    {
+                        Random random = new Random();
+                        await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: $"Qabul qilindi buyurtma {random.Next(20, 40)} daqiqada yetkazib beriladi bo'ladi",
+                                cancellationToken: cancellationToken
+                              );
+                        CRUD.ChangeStatusCode(chatId, 0);
+                        return;
+                    }
+                    else
+                    {
+                        await botClient.SendTextMessageAsync(
+                                chatId: chatId,
+                                text: $"Afsuski endi siz uchun bot qayta run boladi",
+                                cancellationToken: cancellationToken);
+                        CRUD.ChangeStatusCode(chatId, 0);
+                    }
                 }
 
             }
