@@ -632,7 +632,6 @@ namespace Telegram_Bot
                             },
                             new[]
                             {
-                                new KeyboardButton("Change Status"),
                                 new KeyboardButton("GetExelFormat"),
                                 new KeyboardButton("GetCustomerList"),
                                 new KeyboardButton("Add Admin")

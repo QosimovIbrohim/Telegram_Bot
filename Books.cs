@@ -75,7 +75,7 @@ namespace Telegram_Bot
             try
             {
                 List<Books> books = DeserializeSerialize<Books>.GetAll(path);
-                var catToRemove = books.Find(ct => ct.Category_name == del_name);
+                var catToRemove = books.Find(ct => ct.Name == del_name);
 
                 if (catToRemove != null)
                 {

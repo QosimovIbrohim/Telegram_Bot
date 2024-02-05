@@ -27,7 +27,7 @@ namespace Telegram_Bot
             List<OrderStatus> orders = DeserializeSerialize<OrderStatus>.GetAll(path);
             foreach (OrderStatus c in orders)
             {
-                sb.Append($"Order Status: {c.status}");
+                sb.Append($"Order Status: {c.status}\n");
             }
             return sb.ToString();
         }
